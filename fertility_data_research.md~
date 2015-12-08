@@ -33,8 +33,7 @@ Każdy plik składa się z:
     * długość geograficzna lewego dolnego rogu macierzy
     * szerokość geograficzna lewego dolnego rogu macierzy
     * wielkość komórki (w stopniach)
-  * macierzy wartości parametru żyzności dla danej komórki (0-9), czyli np. wiersz 1080 będzie przedstawiał wartości parametru żyzności dla Równika
-
+  * macierzy wartości parametru (0-9)
 
 ## Przykładowy fragment pliku
 
