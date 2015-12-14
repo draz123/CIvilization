@@ -48,7 +48,7 @@ Każdy plik składa się z:
   * usunie nagłówki
   * wytnie z pliku tylko basen M. Śródziemnego
   * zapisze dane do odpowiedniego atrybutu automatu
-* obliczyć atrybut żyzności gleby jako średnia (ważona/arytmetyzna) z otrzymanych 7 atrybutów
+* obliczyć atrybut żyzności gleby jako średnia (ważona/arytmetyczna) z otrzymanych 7 atrybutów
 
 ## Inne
 
