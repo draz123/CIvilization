@@ -1,5 +1,6 @@
 package atm;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -13,8 +14,15 @@ public class Society {
 	private String color;
 	private ArrayList<Cell> cells;
 	private int maintenance;
+	MapHandler m;
 	
 	public Society(){
+		try {
+			m=new MapHandler();
+		} catch (IOException | RuntimeException e) {
+			e.printStackTrace();
+		}
+		cells=new ArrayList<>();
 		this.size=0;
 		this.wealth=0;
 		this.maintenance=0;
@@ -22,33 +30,37 @@ public class Society {
 		setStartPosition();
 	}
 	
-	private void setStartPosition() {
+	private void setStartPosition() {		
 		Cell c=new Cell();
 		int _x=getXCoordinate();
 		int _y=getYCoordinate();
-		while(MapHandler.getMap()[_x][_y].getWealth()==0){
+		while(m.getMap()[_x][_y].getWealth()==0){
 			_x=getXCoordinate();
 			_y=getYCoordinate();
 		}
 		c.setX(_x);
 		c.setY(_y);
+		System.out.println("Civilization's settlement coordinates are:["+c.getX()+","+c.getY()+"]");
 		c.setHasNoSociety(false);
+		c.toString();
 		addCell(c);	
 		updateSociety();
 		size++;
+
 	}
 	
 	private int getXCoordinate(){
-		Random rx=new Random(MapHandler.getHeight());
-		return rx.nextInt();
+		Random rx=new Random();
+		return rx.nextInt(m.getHeight());
 	}
 	
 	private int getYCoordinate(){
-		Random ry=new Random(MapHandler.getWidth());
-		return ry.nextInt();
+		Random ry=new Random();
+		return ry.nextInt(m.getWidth());
 	}
 	
 	public void addCell(Cell c){
+		c.toString();
 		c.setHasNoSociety(false);
 		size++;
 		cells.add(c);
@@ -77,8 +89,6 @@ public class Society {
 		}
 	}
 	
-	public void doAction(){
-		//Algorithm where we will count the next population's move
-	}
+
 }
 

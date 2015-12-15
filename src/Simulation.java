@@ -6,12 +6,13 @@ import map.MapHandler;
 
 public class Simulation{
 
-	private Cell map[][];
+	private static Cell map[][];
 	private int width;
 	private int height;
 	private ArrayList<Society> societies;
 	
-	public Simulation(){		
+	public Simulation(){	
+		societies=new ArrayList<Society>();
 	}
 	
 	public void addSociety(Society society){
@@ -21,7 +22,6 @@ public class Simulation{
 	public void doTurn() {
 		for (Society s : societies){
 			s.updateSociety();
-			s.doAction();
 			MapHandler.updateMap(map);
 		}
 		
