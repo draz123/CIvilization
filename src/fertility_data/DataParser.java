@@ -15,7 +15,6 @@ public class DataParser {
 	public static RasterMod parseData(String path) throws IOException, RuntimeException {
 		return reader.readRaster(path);
 	}
-
 	
 	public static List<RasterMod> parseAllSoilQualityData() throws IOException, RuntimeException {
 
