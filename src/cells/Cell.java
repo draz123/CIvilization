@@ -5,7 +5,8 @@ public class Cell {
 	private int slope;
 	private int fertility;
 	
-	public Cell(){		
+	public Cell(int fertility){
+		this.fertility = fertility;
 	}
 	
 	public Cell(int slope, int fertility){

@@ -8,8 +8,18 @@ public class DataParser {
 	
 	static RasterReaderMod reader = new RasterReaderMod();
 	
+	public static RasterMod parseData() throws IOException, RuntimeException {
+		return reader.readRaster("resources/fertility_data/");
+	}
+	
 	public static RasterMod parseData(String path) throws IOException, RuntimeException {
 		return reader.readRaster(path);
+	}
+
+	
+	public static List<RasterMod> parseAllSoilQualityData() throws IOException, RuntimeException {
+
+		return parseAllSoilQualityData("resources/fertility_data/");
 	}
 	
 	public static List<RasterMod> parseAllSoilQualityData(String path) throws IOException, RuntimeException {
