@@ -26,8 +26,14 @@ public class DataParserTest {
 	}
 	
 	@Test
-	public void testParseAllSoilQualityData() throws IOException, RuntimeException {
+	public void testParseAllSoilQualityData1() throws IOException, RuntimeException {
 		List<RasterMod> list = DataParser.parseAllSoilQualityData("resources/fertility_data/");
+		assertEquals(6, list.get(6).getValue(270, 0), 0.00001);
+	}
+	
+	@Test
+	public void testParseAllSoilQualityData2() throws IOException, RuntimeException {
+		List<RasterMod> list = DataParser.parseAllSoilQualityData();
 		assertEquals(6, list.get(6).getValue(270, 0), 0.00001);
 	}
 	

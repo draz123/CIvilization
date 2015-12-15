@@ -10,9 +10,10 @@ public class Cell {
 	//second coordinate of cell
 	private int y;
 	
+
 	private boolean isBorderCell=true;
 	private boolean hasNoSociety=true;
-	
+
 	public Cell(){		
 	}
 	
