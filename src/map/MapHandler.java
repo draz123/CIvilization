@@ -10,27 +10,8 @@ import fertility_data.RasterToMapConverter;
 
 public class MapHandler {
 	
-	private static int width;
-	private static int height;
-	
-	public static int getHeight() {
-		return height;
-	}
-
-	public static void setHeight(int height) {
-		MapHandler.height = height;
-	}
-
-	public static void setWidth(int width) {
-		MapHandler.width = width;
-	}
-	
-	public static int getWidth() {
-		return width;
-	}
-
-	private Cell[][] map;
-	private int rows, cols;
+	private static Cell[][] map;
+	private static int rows, cols;
 	
 	public MapHandler() throws IOException, RuntimeException{
 		this(new MapJoiningAverage());
@@ -62,17 +43,20 @@ public class MapHandler {
 		
 	}
 	
-	public Cell[][] getMap() {
-		return map;
-	}
-
-	public int getRows() {
+	public static int getHeight() {
 		return rows;
 	}
 
-	public int getCols() {
-		return cols;
+	public static void setHeight(int height) {
+		MapHandler.rows = height;
+	}
 
+	public static void setWidth(int width) {
+		MapHandler.cols = width;
+	}
+	
+	public static int getWidth() {
+		return cols;
 	}
 	
 	public static Cell[][] getMap(){

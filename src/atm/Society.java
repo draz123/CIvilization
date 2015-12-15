@@ -24,25 +24,28 @@ public class Society {
 	
 	private void setStartPosition() {
 		Cell c=new Cell();
-//tu dzialam tera
-		if(MapHandler.getMap()[getCoordinates()[1]][getCoordinates()[2]].getValue()!=0){
-			c.setX(_x);
-			c.setY(_y);
+		int _x=getXCoordinate();
+		int _y=getYCoordinate();
+		while(MapHandler.getMap()[_x][_y].getWealth()==0){
+			_x=getXCoordinate();
+			_y=getYCoordinate();
 		}
-		
+		c.setX(_x);
+		c.setY(_y);
 		c.setHasNoSociety(false);
 		addCell(c);	
 		updateSociety();
 		size++;
 	}
 	
-	private int[] getCoordinates(){
+	private int getXCoordinate(){
 		Random rx=new Random(MapHandler.getHeight());
+		return rx.nextInt();
+	}
+	
+	private int getYCoordinate(){
 		Random ry=new Random(MapHandler.getWidth());
-		int[] result=new int[2];
-		result[0]=rx.nextInt();
-		result[1]=rx.nextInt();;
-		return result;
+		return ry.nextInt();
 	}
 	
 	public void addCell(Cell c){
@@ -58,7 +61,7 @@ public class Society {
 	
 	public void updateSociety(){
 		for(Cell c:cells){
-			wealth+=c.getValue();
+			wealth+=c.getWealth();
 		}
 		
 		if(wealth==maintenance){
