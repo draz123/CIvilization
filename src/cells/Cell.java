@@ -5,7 +5,7 @@ import map.MapHandler;
 public class Cell {
 
 	private int fertility;
-	//first cordinate of cell
+	//first coordinate of cell
 	private int x;
 	//second coordinate of cell
 	private int y;
@@ -31,6 +31,10 @@ public class Cell {
 
 	public void setFertility(int fertility) {
 		this.fertility = fertility;
+	}
+	
+	public int getFertility() {
+		return this.fertility;
 	}
 
 	public int getX() {
