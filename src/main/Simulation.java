@@ -1,3 +1,4 @@
+package main;
 import java.util.ArrayList;
 
 import atm.Society;
@@ -6,9 +7,7 @@ import map.MapHandler;
 
 public class Simulation{
 
-	private static Cell map[][];
-	private int width;
-	private int height;
+	public static Cell map[][];
 	private ArrayList<Society> societies;
 	
 	public Simulation(){	
@@ -23,20 +22,15 @@ public class Simulation{
 		for (Society s : societies){
 			s.updateSociety();
 			MapHandler.updateMap(map);
-		}
-		
+		}		
 	}
 
 	public void setMap(Cell[][] map,int height,int width) {
-		setMapDimensions(height,width);
 		this.map=map;
 		//There is the setting and processing map values to cells
 		
 	}
 	
-	private void setMapDimensions(int height,int width){
-		this.height=height;
-		this.width=width;
-	}
+
 
 }

@@ -1,8 +1,9 @@
 package cells;
 
+import main.Simulation;
 import map.MapHandler;
 
-public class Cell {
+public class Cell implements Comparable<Cell> {
 
 	private int fertility;
 	//first coordinate of cell
@@ -11,10 +12,18 @@ public class Cell {
 	private int y;
 	
 
-	private boolean isBorderCell=true;
+	private boolean borderCell=true;
 	private boolean hasNoSociety=true;
 
 	public Cell(){		
+	}
+	
+	public boolean isBorderCell(){
+		return borderCell;
+	}
+	
+	public boolean hasNoSociety(){
+		return hasNoSociety;
 	}
 	
 	public void setHasNoSociety(boolean hasNoSociety){
@@ -25,8 +34,11 @@ public class Cell {
 		this.fertility=fertility;
 	}
 	
-	public int getWealth() {
-		return fertility;
+
+	public Cell(int fertility, int x, int y) {
+		setFertility(fertility);
+		setX(x);
+		setY(y);
 	}
 
 	public void setFertility(int fertility) {
@@ -53,14 +65,19 @@ public class Cell {
 		this.y = y;
 	}
 	
-	private void checkBorderCondition(){
+	public void checkBorderCondition(){
 		for(int i=x-1;i<=x+1;i++){
-			for(int j=y-1;j<=y+1;i++){
-				if(!hasNoSociety){
-					isBorderCell=false;
+			for(int j=y-1;j<=y+1;j++){
+				if(i<MapHandler.getHeight() && j<MapHandler.getWidth() && !Simulation.map[i][j].hasNoSociety && i>=0 && j>=0 &&  i!=x && j!=y){
+					borderCell=false;
 				}
 			}
 		}
+	}
+
+	@Override
+	public int compareTo(Cell o) {
+		return o.getFertility()-this.getFertility();
 	}
 	
 }

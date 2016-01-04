@@ -28,7 +28,9 @@ public class MapHandler {
 		map = new Cell[rows][cols];
 		
 		for (int j=0; j<rows; j++)
-			for (int i=0; i<cols; i++) map[j][i] = new Cell((int)fertilityMap[j][i]);
+			for (int i=0; i<cols; i++) {
+				map[j][i] = new Cell((int)fertilityMap[j][i],j,i);
+			}
 			//TODO: change fertility to int (no casting)
 	}
 	
