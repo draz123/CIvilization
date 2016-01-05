@@ -1,5 +1,6 @@
 package atm;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
@@ -12,7 +13,7 @@ public class Society {
 
     private int size;
     private int wealth;
-    private String color;
+    private Color color;
     private ArrayList<Cell> cells;
     private ArrayList<Cell> candidateCells;
     private ArrayList<Cell> borderCells;
@@ -26,7 +27,8 @@ public class Society {
         this.size = 0;
         this.wealth = 0;
         this.maintenance = 0;
-        setColor();
+        Random r = new Random();
+        this.color = new Color(r.nextInt(255), r.nextInt(255), r.nextInt(255));
         setStartPosition();
     }
 
@@ -57,6 +59,7 @@ public class Society {
         if (c.hasNoSociety()) {
             Simulation.map[c.getX()][c.getY()].setHasNoSociety(false);
             c.setHasNoSociety(false);
+            c.setColor(this.color);
             size++;
             cells.add(c);
         }
@@ -65,6 +68,7 @@ public class Society {
     public void removeCell(Cell c) {
         Simulation.map[c.getX()][c.getY()].setHasNoSociety(true);
         c.setHasNoSociety(true);
+        // usuń kolor cywilizacji z komórki?
         size--;
         cells.remove(c);
     }
@@ -87,6 +91,14 @@ public class Society {
         } else {
             loseCells();
         }
+    }
+    
+    public Color getColor() {
+    	return this.color;
+    }
+    
+    public void setColor(Color color) {
+        this.color = color;
     }
 
     private void loseCells() {
@@ -127,11 +139,7 @@ public class Society {
             }
         }
     }
-
-    private void setColor() {
-        Random r = new Random();
-        //here we will set random color to society as a specific formatted code
-    }
+   
 }
 
 
