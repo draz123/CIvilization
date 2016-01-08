@@ -22,7 +22,6 @@ public class Simulation {
     public void doTurn() {
         for (Society s : societies) {
             s.updateSociety();
-            MapHandler.updateMap(map);
         }
     }
 

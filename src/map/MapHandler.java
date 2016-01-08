@@ -2,6 +2,7 @@ package map;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Random;
 
 import cells.Cell;
 import fertility_data.DataParser;
@@ -12,7 +13,7 @@ public class MapHandler {
 
     private static Cell[][] map;
     private static int rows, cols;
-
+    private static Random random = new Random();
     public MapHandler() throws IOException, RuntimeException {
         this(new MapJoiningAverage());
     }
@@ -64,10 +65,14 @@ public class MapHandler {
     public static Cell[][] getMap() {
         return map;
     }
+    
+	public static int getRandomXMapCoordinate() {
+		return random.nextInt(MapHandler.getHeight());
+	}
 
-    public static void updateMap(Cell map[][]) {
-        //coloring map after society evaluation
-    }
+	public static int getRandomYMapCoordinate() {
+		return random.nextInt(MapHandler.getWidth());
+	}
 
 
 }

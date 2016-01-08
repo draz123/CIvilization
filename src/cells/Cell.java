@@ -82,11 +82,11 @@ public class Cell implements Comparable<Cell> {
     	else this.color = new Color(255, 255, 255);
     }
 
-    public void checkBorderCondition() {
+    public void updateIsBorderCell() {
         int counter = 0;
         for (int i = x - 1; i <= x + 1; i++) {
             for (int j = y - 1; j <= y + 1; j++) {
-                if (i < MapHandler.getHeight() && j < MapHandler.getWidth() && !Simulation.map[i][j].hasNoSociety && i >= 0 && j >= 0 && i != x && j != y) {
+                if (isOnMap(i,j) ) {
                     counter++;
                 }
             }
@@ -95,6 +95,11 @@ public class Cell implements Comparable<Cell> {
             borderCell = false;
         }
     }
+    
+    private boolean isOnMap(int i, int j){
+    	return i >= 0 && j >= 0 && i != x && j != y && i < MapHandler.getHeight() && j < MapHandler.getWidth() && !Simulation.map[i][j].hasNoSociety();
+    }
+
 
     @Override
     public int compareTo(Cell o) {

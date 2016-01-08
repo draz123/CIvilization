@@ -1,5 +1,8 @@
 package visual;
 
+import java.awt.Dimension;
+import java.awt.Toolkit;
+
 import javax.swing.JFrame;
 
 import cells.Cell;
@@ -15,6 +18,7 @@ public class MapVisualizer{
         
         frame.add(panel);
         frame.pack();
+        setCenter();
         frame.setVisible(true);
         frame.setResizable(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -23,5 +27,14 @@ public class MapVisualizer{
 	public void paintMap(Cell[][] map, int turn) {
 		frame.setTitle("Turn " + turn);
 		panel.paintMap(map, turn);
+	}
+	
+	private void setCenter(){
+        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+        int w = frame.getSize().width;
+        int h = frame.getSize().height;
+        int x = (dim.width-w)/2;
+        int y = (dim.height-h)/2;
+        frame.setLocation(x, y);
 	}
 }

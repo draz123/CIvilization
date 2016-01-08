@@ -8,7 +8,8 @@ import visual.MapVisualizer;
 
 public class Global {
 
-    private static final int TURNS = 10000;
+    private static final int TURNS = 500;
+	private static final int CIVILIZATIONS_COUNT = 10;
 
     public static void main(String args[]) throws IOException, RuntimeException {
         //Reading map
@@ -21,9 +22,9 @@ public class Global {
         System.out.println("Map loaded");
         
         System.out.println("Setting civilization's positions...");
-        s.addSociety(new Society());
-        s.addSociety(new Society());
-        s.addSociety(new Society());
+        for(int i=0;i<CIVILIZATIONS_COUNT;i++){
+        	s.addSociety(new Society());
+        }
         System.out.print("Societies settled\n");
         
         System.out.println("Setting up the visualization...");
