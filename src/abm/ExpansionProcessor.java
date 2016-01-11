@@ -1,10 +1,9 @@
-package atm;
+package abm;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
 import cells.Cell;
-import main.Simulation;
 import map.MapHandler;
 
 public class ExpansionProcessor{
@@ -54,8 +53,8 @@ public class ExpansionProcessor{
 		for (int i = c.getX() - 1; i <= c.getX() + 1; i++) {
 			for (int j = c.getY() - 1; j <= c.getY() + 1; j++) {
 				if (i >= 0 && j >= 0 && i < MapHandler.getHeight() && j < MapHandler.getWidth()
-						&& Simulation.map[i][j].hasNoSociety() && Simulation.map[i][j].getFertility() > 0) {
-					proposedCells.add(Simulation.map[i][j]);
+						&& MapHandler.getMap()[i][j].hasNoAgent() && MapHandler.getMap()[i][j].getFertility() > 0) {
+					proposedCells.add(MapHandler.getMap()[i][j]);
 				}
 			}
 		}

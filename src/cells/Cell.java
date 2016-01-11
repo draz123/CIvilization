@@ -1,21 +1,22 @@
 package cells;
 
-import main.Simulation;
 import java.awt.Color;
+import java.util.ArrayList;
+
+import abm.Agent;
 import map.MapHandler;
 
 public class Cell implements Comparable<Cell> {
 
     private int fertility;
-    //first coordinate of cell
+   
     private int x;
-    //second coordinate of cell
     private int y;
-
     private Color color;
-
+    private ArrayList<Agent> agents;
+    
     private boolean borderCell = true;
-    private boolean hasNoSociety = true;
+    private boolean hasNoAgent = true;
 
     public Cell() {
     	setInitColor();
@@ -24,25 +25,27 @@ public class Cell implements Comparable<Cell> {
     public Cell(int fertility) {
         this.fertility = fertility;
         setInitColor();
+        agents = new ArrayList<Agent>();
     }
 
     public Cell(int fertility, int x, int y) {
-        setFertility(fertility);
+    	this.fertility = fertility;
         setX(x);
         setY(y);
         setInitColor();
+        agents = new ArrayList<Agent>();
     }
 
     public boolean isBorderCell() {
         return borderCell;
     }
 
-    public boolean hasNoSociety() {
-        return hasNoSociety;
+    public boolean hasNoAgent() {
+        return hasNoAgent;
     }
 
-    public void setHasNoSociety(boolean hasNoSociety) {
-        this.hasNoSociety = hasNoSociety;
+    public void setHasNoAgent(boolean hasNoAgent) {
+        this.hasNoAgent = hasNoAgent;
     }
 
     public void setFertility(int fertility) {
@@ -81,6 +84,10 @@ public class Cell implements Comparable<Cell> {
     	if (this.fertility == 0) this.color = new Color(0, 0, 0);
     	else this.color = new Color(255, 255, 255);
     }
+    
+    public void addAgent(Agent agent) {
+        agents.add(agent);
+    }
 
     public void updateIsBorderCell() {
         int counter = 0;
@@ -97,7 +104,7 @@ public class Cell implements Comparable<Cell> {
     }
     
     private boolean isOnMap(int i, int j){
-    	return i >= 0 && j >= 0 && i != x && j != y && i < MapHandler.getHeight() && j < MapHandler.getWidth() && !Simulation.map[i][j].hasNoSociety();
+    	return i >= 0 && j >= 0 && i != x && j != y && i < MapHandler.getHeight() && j < MapHandler.getWidth() && !MapHandler.getMap()[i][j].hasNoAgent();
     }
 
 

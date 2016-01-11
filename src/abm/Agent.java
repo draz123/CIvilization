@@ -1,24 +1,23 @@
-package atm;
+package abm;
 
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Random;
 
-import main.Simulation;
 import cells.Cell;
 import map.MapHandler;
 
-public class Society {
+public class Agent {
 
 	private int cellCount;
 	private int wealth;
 	private Color color;
 	private ArrayList<Cell> cells;
 	private int maintenance;
-	private SocietyCellUpdater societyCellUpdater;
+	private AgentCellUpdater agentCellUpdater;
 	
-	public Society() {
-		societyCellUpdater=new SocietyCellUpdater(this);
+	public Agent() {
+		agentCellUpdater=new AgentCellUpdater(this);
 		cells = new ArrayList<>();
 		this.cellCount = 0;
 		this.wealth = 0;
@@ -69,37 +68,37 @@ public class Society {
 	}	
 	
 
-	public Color getSocietyColor() {
+	public Color getAgentColor() {
 		return this.color;
 	}
 
-	public void setSocietyColor(Color color) {
+	public void setAgentColor(Color color) {
 		this.color = color;
 	}
 
 	private void setStartPosition() {
 		int _x = MapHandler.getRandomXMapCoordinate();
 		int _y = MapHandler.getRandomYMapCoordinate();
-		while (Simulation.map[_x][_y].getFertility() == 0) {
+		while (MapHandler.getMap()[_x][_y].getFertility() == 0) {
 			_x = MapHandler.getRandomXMapCoordinate();
 			_y = MapHandler.getRandomYMapCoordinate();
 		}
-		System.out.println("Civilization's settlement coordinates are:[" + Simulation.map[_x][_y].getX() + ","
-				+ Simulation.map[_x][_y].getY() + "]");
-		societyCellUpdater.addCellToSociety(Simulation.map[_x][_y]);
+		System.out.println("Civilization's settlement coordinates are:[" + MapHandler.getMap()[_x][_y].getX() + ","
+				+ MapHandler.getMap()[_x][_y].getY() + "]");
+		agentCellUpdater.addCellToAgent(MapHandler.getMap()[_x][_y]);
 	}
 
-	public void updateSociety() {
-		wealth=getSocietyWealth();
+	public void updateAgent() {
+		wealth=getAgentWealth();
 		maintenance = (int) (wealth * 0.5);   //TODO tu musze powazniejszy algorytm zaimplementowac
 		ArrayList<Cell> borderCells=getBorderCells();
 		System.out.println("Wealth: " + wealth + " Maintenance: " + maintenance + " Size: " + cellCount);
 		if (wealth > maintenance) {
 			ExpansionProcessor expansionProcessor = new ExpansionProcessor(wealth, maintenance, borderCells);
-			societyCellUpdater.addCellsToSociety(expansionProcessor.getCells());
+			agentCellUpdater.addCellsToAgent(expansionProcessor.getCells());
 		} else {
 			RegressionProcessor regressionProcessor = new RegressionProcessor(wealth, maintenance, borderCells);
-			societyCellUpdater.removeCellsFromSociety(regressionProcessor.getCells());
+			agentCellUpdater.removeCellsFromAgent(regressionProcessor.getCells());
 		}
 	}
 	
@@ -114,7 +113,7 @@ public class Society {
 		return borderCells;
 	}
 	
-	private int getSocietyWealth() {
+	private int getAgentWealth() {
 		int result=0;
 		for (Cell c : cells) {
 			result += c.getFertility();
@@ -124,7 +123,7 @@ public class Society {
 
 }
 
-// 1. Dodajemy spolecznosci metoda addSociety()
+// 1. Dodajemy spolecznosci metoda addAgent()
 // a) Dla kazdej spolecznosci obliczane sa losowe miejsca startowe
 // 2.Rozpoczynamy symulacje
 // 3.Tura to:

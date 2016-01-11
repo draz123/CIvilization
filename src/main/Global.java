@@ -1,8 +1,9 @@
 package main;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
-import atm.Society;
+import abm.Agent;
 import map.MapHandler;
 import visual.MapVisualizer;
 
@@ -14,16 +15,16 @@ public class Global {
     public static void main(String args[]) throws IOException, RuntimeException {
         //Reading map
         System.out.println("Program started,\nSetting up simulation parameters:\n");
-        Simulation s = new Simulation();
         
         System.out.println("Map loading...");
         MapHandler map = new MapHandler();
-        s.setMap(map.getMap(), map.getHeight(), map.getWidth());
         System.out.println("Map loaded");
+        
+        ArrayList<Agent> s = new ArrayList<Agent>();
         
         System.out.println("Setting civilization's positions...");
         for(int i=0;i<CIVILIZATIONS_COUNT;i++){
-        	s.addSociety(new Society());
+        	s.add(new Agent());
         }
         System.out.print("Societies settled\n");
         
@@ -36,12 +37,18 @@ public class Global {
             //Civilization grown process
             //if (i % 10 == 0)
                 System.out.println("Doing simulation, turn: " + i);
-            s.doTurn();
+            doTurn(s);
         }
         System.out.println("End of simulation");
         visual.paintMap(map.getMap(), 0);
 
         //Getting results and printing them
+    }
+    
+    public static void doTurn(ArrayList<Agent> s) {
+        for (Agent agent : s) {
+            agent.updateAgent();
+        }
     }
 
 }
