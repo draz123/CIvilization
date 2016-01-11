@@ -15,7 +15,8 @@ public class Agent {
 	private ArrayList<Cell> cells;
 	private int maintenance;
 	private AgentCellUpdater agentCellUpdater;
-	
+	private int lifeTime; 
+
 	public Agent() {
 		agentCellUpdater=new AgentCellUpdater(this);
 		cells = new ArrayList<>();
@@ -25,6 +26,11 @@ public class Agent {
 		Random r = new Random();
 		this.color = new Color(r.nextInt(255), r.nextInt(255), r.nextInt(255));
 		setStartPosition();
+		lifeTime = 0;
+	}
+	
+	public int getLifeTime() {
+		return lifeTime;
 	}
 	
 	public int getCellCount() {
