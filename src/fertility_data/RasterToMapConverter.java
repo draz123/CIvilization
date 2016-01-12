@@ -6,7 +6,6 @@ import java.util.List;
 public class RasterToMapConverter {
 
     public static double[][] convertRasterToFertilityMap(RasterMod raster, int skipCols, int cols, int skipRows, int rows) {
-
         double[][] map = new double[rows][cols];
         double[][] rasterData = raster.getData();
 
@@ -16,12 +15,10 @@ public class RasterToMapConverter {
     }
 
     public static List<double[][]> convertRastersToFertilityMaps(List<RasterMod> rasters) {
-
         return convertRastersToFertilityMaps(rasters, 45, -10, 25, 40);
     }
 
     public static List<double[][]> convertRastersToFertilityMaps(List<RasterMod> rasters, int leftUpperLat, int leftUpperLon, int rightBottomLat, int rightBottomLon) {
-
         int skipCols = (int) Math.floor((leftUpperLon - (-180)) / rasters.get(0).getCellsize());
         int cols = (int) Math.ceil((rightBottomLon - leftUpperLon) / rasters.get(0).getCellsize());
         int skipRows = (int) Math.floor((90 - leftUpperLat) / rasters.get(0).getCellsize());

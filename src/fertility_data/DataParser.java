@@ -17,7 +17,6 @@ public class DataParser {
 	}
 	
 	public static List<RasterMod> parseAllSoilQualityData() throws IOException, RuntimeException {
-
 		return parseAllSoilQualityData("resources/fertility_data/");
 	}
 	

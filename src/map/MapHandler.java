@@ -21,7 +21,6 @@ public class MapHandler {
     }
 
     public MapHandler(MapJoiningStrategy strategy) throws IOException, RuntimeException {
-
         List<RasterMod> rasters = DataParser.parseAllSoilQualityData();
         List<double[][]> maps = RasterToMapConverter.convertRastersToFertilityMaps(rasters);
         double[][] fertilityMap = strategy.joinMaps(maps);
@@ -31,10 +30,8 @@ public class MapHandler {
         map = new Cell[rows][cols];
 
         for (int i = 0; i < rows; i++)
-            for (int j = 0; j < cols; j++) {
+            for (int j = 0; j < cols; j++)
                 map[i][j] = new Cell((int) fertilityMap[i][j], i, j);
-            }
-        //TODO: change fertility to int (no casting)
     }
 
     public int getHeight() {

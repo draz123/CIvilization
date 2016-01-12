@@ -20,11 +20,10 @@ public class Global {
 	public static final int INIT_CIVIL_SIZE = 1000;
 	public static final int MAX_AGENTS_CELL_LIMIT = 7000;
 	public static final int MAX_FERTILITY = 7;
+	
 	public static HashMap<Color, String> civilizations = new HashMap<>();
 	
     public static void main(String args[]) throws IOException, RuntimeException {
-    	
-    	ArrayList<Agent> agents = new ArrayList<Agent>();
         System.out.println("Program started,\nSetting up simulation parameters:\n");
        
         System.out.println("Map loading...");
@@ -46,9 +45,8 @@ public class Global {
             System.out.println("Simulation: turn " + i);
             alg.nextTurn();
         }
-        
-        System.out.println("End of simulation");
         visual.paintMap(map.getMap(), 0);
+        System.out.println("End of simulation");
     }
     
 	private static int[] setStartPosition(MapHandler map) {

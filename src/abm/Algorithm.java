@@ -2,7 +2,6 @@ package abm;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.Random;
 
 import main.Global;
@@ -15,7 +14,6 @@ public class Algorithm {
 	public static final int MIGRATION_PERCENT = 40;
 	public static final int TRAVEL_PERCENT = 10;
 
-	
 	private MapHandler map;
 
 	public Algorithm(MapHandler map) {

@@ -7,7 +7,7 @@ import java.util.HashMap;
 import main.Global;
 import map.MapHandler;
 
-public class Cell implements Comparable<Cell> {
+public class Cell {
    
     private int col;
     private int row;
@@ -18,7 +18,6 @@ public class Cell implements Comparable<Cell> {
     private HashMap<Color, Integer> citizens;
     private boolean borderCell = true;
 
-    
     public Cell() {
     	setInitColor();
     }
@@ -90,12 +89,8 @@ public class Cell implements Comparable<Cell> {
     	HashMap.Entry<Color, Integer> maxEntry = null;
 
     	for (HashMap.Entry<Color, Integer> entry : citizens.entrySet())
-    	{
     	    if (maxEntry == null || entry.getValue().compareTo(maxEntry.getValue()) > 0)
-    	    {
     	        maxEntry = entry;
-    	    }
-    	}
     	
     	return maxEntry.getKey();
     }
@@ -107,10 +102,5 @@ public class Cell implements Comparable<Cell> {
     public int getFreeRoom() {
     	return maxAgentsNr - getAgentsNumber();
     }
-
-    @Override
-    public int compareTo(Cell o) {
-        return o.getFertility() - this.getFertility();
-    }
-
+    
 }
