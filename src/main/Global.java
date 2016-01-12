@@ -14,7 +14,7 @@ import visual.MapVisualizer;
 
 public class Global {
 
-    public static final int TURNS = 50;
+    public static final int TURNS = 5000;
 	public static final int TURN_TIME = 10;
 	public static final int CIVILIZATIONS_NR = 10;
 	public static final int INIT_CIVIL_SIZE = 1000;

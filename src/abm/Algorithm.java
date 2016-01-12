@@ -1,6 +1,7 @@
 package abm;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.Random;
 
@@ -35,16 +36,25 @@ public class Algorithm {
 		for (int i=0; i<rows; i++) {
 			for (int j=0; j<cols; j++) {
 				Cell c = map.getCell(i, j);
-				//ArrayList<Agent> agentsCopy = new ArrayList<Agent>(c.agents);
-				Iterator<Agent> iter = c.agents.iterator();
-				while(iter.hasNext()) {
-					Agent agent = iter.next();
-					if (agent.getLifeTime() == DEATH_TIME) iter.remove();
-				}
-				c.agents = new ArrayList<Agent>(c.agents);
+				ArrayList<Agent> youngAgents = new ArrayList<Agent>();
 				for (Agent agent: c.agents)
-					if (c.hasRoomForAgent() && (r.nextInt(100) < (10-2*agent.getLifeTime())*10)) 
-						c.addAgent(new Agent(agent.getColor()));
+					if (agent.getLifeTime() < DEATH_TIME) youngAgents.add(agent);
+				Collections.reverse(youngAgents);
+				c.agents = youngAgents;
+				
+				int room = c.getFreeRoom();
+				ArrayList<Agent> newborns = new ArrayList<Agent>();
+				for (Agent agent: c.agents) {
+					if (room == 0) 
+						break;
+					boolean succeedMakingABaby = r.nextInt(100) < (10-2*agent.getLifeTime())*10;
+					if (succeedMakingABaby) { 
+						newborns.add(new Agent(agent.getColor()));
+						room--;
+					}
+				}
+				for (Agent newborn: newborns)
+					c.addAgent(newborn);
 			}
 		}
 	}

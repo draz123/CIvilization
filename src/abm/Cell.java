@@ -29,7 +29,7 @@ public class Cell implements Comparable<Cell> {
         this.row = row;
         maxAgentsNr = Global.MAX_AGENTS_CELL_LIMIT / Global.MAX_FERTILITY * fertility;
         setInitColor();
-        agents = new ArrayList<Agent>(maxAgentsNr);
+        agents = new ArrayList<Agent>();
         citizens = new HashMap<Color, Integer>();
     }
 
@@ -85,6 +85,8 @@ public class Cell implements Comparable<Cell> {
     }
     
     public Color getDominantCivilization() {
+    	if (citizens.entrySet().size() == 0) return color;
+    	
     	HashMap.Entry<Color, Integer> maxEntry = null;
 
     	for (HashMap.Entry<Color, Integer> entry : citizens.entrySet())
