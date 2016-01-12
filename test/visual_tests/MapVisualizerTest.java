@@ -5,8 +5,7 @@ import java.util.Random;
 
 import org.junit.Test;
 
-import cells.Cell;
-
+import abm.Cell;
 import visual.MapVisualizer;
 
 public class MapVisualizerTest {

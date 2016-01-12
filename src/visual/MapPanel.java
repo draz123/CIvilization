@@ -8,7 +8,7 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.JPanel;
 
-import cells.Cell;
+import abm.Cell;
 
 public class MapPanel extends JPanel {
 

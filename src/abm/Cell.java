@@ -1,42 +1,33 @@
-package cells;
+package abm;
 
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import abm.Agent;
 import main.Global;
 import map.MapHandler;
 
 public class Cell implements Comparable<Cell> {
    
-    private int x;
-    private int y;
+    private int col;
+    private int row;
     private int fertility;
     private int maxAgentsNr;
     private Color color;
-    private ArrayList<Agent> agents;
-    
-    private boolean borderCell = true;
-    private boolean hasNoAgent = true;
+    protected ArrayList<Agent> agents;
     private HashMap<Color, Integer> citizens;
+    private boolean borderCell = true;
+
     
     public Cell() {
     	setInitColor();
     }
-    
-//    public Cell(int fertility) {
-//        this.fertility = fertility;
-//        maxAgentsNr = Global.MAX_AGENTS_NR_LIMIT / 7 * fertility;
-//        setInitColor();
-//        agents = new ArrayList<Agent>();
-//    }
 
-    public Cell(int fertility, int x, int y) {
+    public Cell(int fertility, int row, int col) {
     	this.fertility = fertility;
-        setX(x);
-        setY(y);
-        maxAgentsNr = Global.MAX_AGENTS_NR_LIMIT / 7 * fertility;
+        this.col = col;
+        this.row = row;
+        maxAgentsNr = Global.MAX_AGENTS_CELL_LIMIT / Global.MAX_FERTILITY * fertility;
         setInitColor();
         agents = new ArrayList<Agent>(maxAgentsNr);
         citizens = new HashMap<Color, Integer>();
@@ -46,42 +37,18 @@ public class Cell implements Comparable<Cell> {
         return borderCell;
     }
 
-    public boolean hasNoAgent() {
-        return hasNoAgent;
-    }
-
-    public void setHasNoAgent(boolean hasNoAgent) {
-        this.hasNoAgent = hasNoAgent;
-    }
-
-    public void setFertility(int fertility) {
-        this.fertility = fertility;
-    }
-
     public int getFertility() {
         return this.fertility;
     }
 
-    public int getX() {
-        return x;
+    public int getCol() {
+        return col;
     }
 
-    public void setX(int x) {
-        this.x = x;
+    public int getRow() {
+        return row;
     }
 
-    public int getY() {
-        return y;
-    }
-
-    public void setY(int y) {
-        this.y = y;
-    }
-    
-    public void setColor(Color color) {
-    	this.color = color;
-    }
-    
     public Color getColor() {
     	return color;
     }
@@ -89,6 +56,13 @@ public class Cell implements Comparable<Cell> {
     private void setInitColor() {
     	if (this.fertility == 0) this.color = new Color(0, 0, 0);
     	else this.color = new Color(255, 255, 255);
+    }
+    
+    public void updateColor() {
+    	int times = getAgentsNumber() / (Global.MAX_AGENTS_CELL_LIMIT / Global.MAX_FERTILITY);
+    	Color c = getDominantCivilization();
+    	for (int i=0; i<times; i++) c = c.darker();
+    	this.color = c;
     }
     
     public void addAgent(Agent agent) {
@@ -123,23 +97,13 @@ public class Cell implements Comparable<Cell> {
     	
     	return maxEntry.getKey();
     }
-
-    public void updateIsBorderCell() {
-        int counter = 0;
-        for (int i = x - 1; i <= x + 1; i++) {
-            for (int j = y - 1; j <= y + 1; j++) {
-                if (isOnMap(i,j) ) {
-                    counter++;
-                }
-            }
-        }
-        if (counter == 8) {
-            borderCell = false;
-        }
+    
+    public boolean hasRoomForAgent() {
+    	return getFreeRoom() > 0;
     }
     
-    private boolean isOnMap(int i, int j){
-    	return i >= 0 && j >= 0 && i != x && j != y && i < MapHandler.getHeight() && j < MapHandler.getWidth() && !MapHandler.getMap()[i][j].hasNoAgent();
+    public int getFreeRoom() {
+    	return maxAgentsNr - getAgentsNumber();
     }
 
     @Override

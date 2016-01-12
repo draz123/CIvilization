@@ -5,7 +5,7 @@ import java.awt.Toolkit;
 
 import javax.swing.JFrame;
 
-import cells.Cell;
+import abm.Cell;
 
 public class MapVisualizer{
 	

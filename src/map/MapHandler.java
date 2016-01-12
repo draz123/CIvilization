@@ -1,19 +1,21 @@
 package map;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import cells.Cell;
+import abm.Cell;
 import fertility_data.DataParser;
 import fertility_data.RasterMod;
 import fertility_data.RasterToMapConverter;
 
 public class MapHandler {
 
-    private static Cell[][] map;
-    private static int rows, cols;
-    private static Random random = new Random();
+    private Cell[][] map;
+    private int rows, cols;
+    private Random random = new Random();
+    
     public MapHandler() throws IOException, RuntimeException {
         this(new MapJoiningAverage());
     }
@@ -28,51 +30,56 @@ public class MapHandler {
         cols = fertilityMap[0].length;
         map = new Cell[rows][cols];
 
-        for (int j = 0; j < rows; j++)
-            for (int i = 0; i < cols; i++) {
-                map[j][i] = new Cell((int) fertilityMap[j][i], j, i);
+        for (int i = 0; i < rows; i++)
+            for (int j = 0; j < cols; j++) {
+                map[i][j] = new Cell((int) fertilityMap[i][j], i, j);
             }
         //TODO: change fertility to int (no casting)
     }
 
-    public MapHandler(
-            MapJoiningStrategy strategy,
-            String path,
-            int leftUpperLat,
-            int leftUpperLon,
-            int rightBottomLat,
-            int rightBottomLon) {
-        //TODO: implement
-
-    }
-
-    public static int getHeight() {
+    public int getHeight() {
         return rows;
     }
 
-    public static void setHeight(int height) {
-        MapHandler.rows = height;
-    }
-
-    public static void setWidth(int width) {
-        MapHandler.cols = width;
-    }
-
-    public static int getWidth() {
+    public int getWidth() {
         return cols;
     }
 
-    public static Cell[][] getMap() {
+    public Cell[][] getMap() {
         return map;
     }
     
-	public static int getRandomXMapCoordinate() {
-		return random.nextInt(MapHandler.getHeight());
+    public Cell getCell(int row, int col) {
+    	return map[row][col];
+    }
+    
+	public int getRandomColCoordinate() {
+		return random.nextInt(cols);
 	}
 
-	public static int getRandomYMapCoordinate() {
-		return random.nextInt(MapHandler.getWidth());
+	public int getRandomRowCoordinate() {
+		return random.nextInt(rows);
 	}
 
-
+    public boolean isOnMap(int row, int col) {
+    	return (row >= 0 && col >= 0 && row < rows && col < cols);
+    }
+    
+    public boolean isOnLand(int row, int col) {
+    	return isOnMap(row, col) && getCell(row, col).getFertility() != 0;
+    }
+    
+    public ArrayList<Cell> getNeighbours(int row, int col) {
+    	ArrayList<Cell> neighbours = new ArrayList<>();
+    	if (isOnLand(row-1, col-1)) neighbours.add(getCell(row-1, col-1));
+    	if (isOnLand(row-1, col)) neighbours.add(getCell(row-1, col));
+    	if (isOnLand(row-1, col+1)) neighbours.add(getCell(row-1, col+1));
+    	if (isOnLand(row, col+1)) neighbours.add(getCell(row, col+1));
+    	if (isOnLand(row+1, col+1)) neighbours.add(getCell(row+1, col+1));
+    	if (isOnLand(row+1, col)) neighbours.add(getCell(row+1, col));
+    	if (isOnLand(row+1, col-1)) neighbours.add(getCell(row+1, col-1));
+    	if (isOnLand(row, col-1)) neighbours.add(getCell(row, col-1));
+    	
+    	return neighbours;
+    }
 }

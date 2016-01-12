@@ -6,7 +6,7 @@ import java.io.IOException;
 
 import org.junit.Test;
 
-import cells.Cell;
+import abm.Cell;
 import map.MapHandler;
 
 public class MapHandlerTest {
