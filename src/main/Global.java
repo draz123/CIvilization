@@ -14,11 +14,13 @@ import visual.MapVisualizer;
 
 public class Global {
 
-    public static final int TURNS = 5000;
+    public static final int TURNS = 500;
 	public static final int TURN_TIME = 10;
-	public static final int CIVILIZATIONS_NR = 10;
-	public static final int INIT_CIVIL_SIZE = 1000;
-	public static final int MAX_AGENTS_CELL_LIMIT = 7000;
+	public static final int CIVILIZATIONS_NR = 5;
+//	public static final int MAX_INIT_CIVIL_SIZE = 1000;
+	public static final int MAX_INIT_CIVIL_SIZE = 10;
+//	public static final int MAX_AGENTS_CELL_LIMIT = 7000;
+	public static final int MAX_AGENTS_CELL_LIMIT = 70;
 	public static final int MAX_FERTILITY = 7;
 	
 	public static HashMap<Color, String> civilizations = new HashMap<>();
@@ -43,6 +45,7 @@ public class Global {
         for (int i = 0; i < TURNS; i++) {
             visual.paintMap(map.getMap(), i);
             System.out.println("Simulation: turn " + i);
+            if (i % 10 == 0) System.out.println("Population size: " + map.countAgents());
             alg.nextTurn();
         }
         visual.paintMap(map.getMap(), 0);
@@ -66,8 +69,8 @@ public class Global {
 			Cell cell = map.getCell(cords[0], cords[1]);
 			// TODO: draw one from basic colors, not completely random!
 			Random r = new Random();
-			Color color = new Color(r.nextInt(255), r.nextInt(255), r.nextInt(255));
-			for(int j=0; j<INIT_CIVIL_SIZE; j++) {
+			Color color = new Color(r.nextInt(50)+200, r.nextInt(50)+200, r.nextInt(50)+200);
+			for(int j=0; j<MAX_INIT_CIVIL_SIZE; j++) {
 				cell.addAgent(new Agent(color));
 			}
 			cell.updateColor();

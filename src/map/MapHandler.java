@@ -79,4 +79,13 @@ public class MapHandler {
     	
     	return neighbours;
     }
+    
+    public int countAgents() {
+    	int sum = 0;
+    	for (int i=0; i<rows; i++)
+    		for (int j=0; j<cols; j++)
+    			sum += map[i][j].getAgentsNumber();
+    	
+    	return sum;
+    }
 }

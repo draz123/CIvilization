@@ -16,7 +16,6 @@ public class Cell {
     private Color color;
     protected ArrayList<Agent> agents;
     private HashMap<Color, Integer> citizens;
-    private boolean borderCell = true;
 
     public Cell() {
     	setInitColor();
@@ -30,10 +29,6 @@ public class Cell {
         setInitColor();
         agents = new ArrayList<Agent>();
         citizens = new HashMap<Color, Integer>();
-    }
-
-    public boolean isBorderCell() {
-        return borderCell;
     }
 
     public int getFertility() {
@@ -53,7 +48,7 @@ public class Cell {
     }
     
     private void setInitColor() {
-    	if (this.fertility == 0) this.color = new Color(0, 0, 0);
+    	if (this.fertility == 0) this.color = new Color(239, 255, 255);
     	else this.color = new Color(255, 255, 255);
     }
     
@@ -65,7 +60,9 @@ public class Cell {
     }
     
     public void addAgent(Agent agent) {
-        agents.add(agent);
+    	// TODO: a temporary solution
+        if (!hasRoomForAgent()) return;
+        agents.add(agent);        
         Color agentsColor = agent.getColor();
         if (citizens.containsKey(agentsColor))
         	citizens.put(agentsColor, citizens.get(agentsColor)+1);
