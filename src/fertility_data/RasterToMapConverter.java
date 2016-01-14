@@ -32,10 +32,18 @@ public class RasterToMapConverter {
         	for (int j = 0; j < cols; j++) {
         		// 0 is for sea as it was originally, then the bigger number the better the soil 
         		double val = map[i][j];
-        		if (val == 0)
+        		if (val == 0 || val == 7) // seas or waterbodies
         			val = 0;
-        		else 
-        			val = 8 - val;
+        		else if (val == 6 || val == 5) // permafrost or non-soil
+        			val = 1; 
+        		else if (val == 4) // very severe constraints
+        			val = 2; 
+         		else if (val == 3) // severe constraints
+        			val = 4; 
+         		else if (val == 2) // moderate constraints
+        			val = 6;
+         		else // non or slight constraints
+        			val = 7;
         		map[i][j] = val;
         	}
 
