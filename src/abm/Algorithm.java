@@ -33,8 +33,8 @@ public class Algorithm {
 	private void deathsAndBirths() {
 		Random r = new Random();
 		
-		// Tu mógłby się rozpoczynać proces dla mapy, w którym Elang/Go przebiegałby po niej i odpalał procesy dla każdej komórki, problem:
-		// jak przekazać mapę, jako strukturę zawierającą Cell, która zawiera w sobie Agent, HashMap, Color oraz sięga do globalnych stałych?
+		// Tu moglby sie rozpoczynac proces dla mapy, w ktorym Elang/Go przebiegalby po niej i odpalal procesy dla kazdej komorki, problem:
+		// jak przekazac mape, jako strukture zawierajaca Cell, ktora zawiera w sobie Agent, HashMap, Color oraz siega do globalnych stalych?
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < cols; j++) {
 				Cell c = map.getCell(i, j);
@@ -63,8 +63,8 @@ public class Algorithm {
 					c.addAgent(newborn);
 			}
 		}
-		// Tu kończyłby się proces dla mapy,
-		// jak odebrać tę mapę?
+		// Tu kozczylby sie proces dla mapy,
+		// jak odebrac te mape?
 	}
 	
 	private void migrations() {
@@ -81,14 +81,14 @@ public class Algorithm {
 	}
 	
 	private void elections() {
-		// Tu mógłby się rozpoczynać proces dla mapy, w którym Elang/Go przebiegałby po niej i odpalał procesy dla każdej komórki
+		// Tu moglby sie rozpoczynac proces dla mapy, w ktorym Elang/Go przebiegalby po niej i odpalal procesy dla kazdej komorki
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < cols; j++) {
 				Cell c = map.getCell(i, j);
 				if (c.getAgentsNumber() != 0) c.updateColor();
 			}
 		}
-		// Tu kończyłby się proces dla mapy
+		// Tu konczylby sie proces dla mapy
 	}
 	
 	private void migrate(Cell c, ArrayList<Cell> neighbours, int migrantsNumber) {
