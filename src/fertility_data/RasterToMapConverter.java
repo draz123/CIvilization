@@ -5,17 +5,8 @@ import java.util.List;
 
 public class RasterToMapConverter {
 
-    public static double[][] convertRasterToFertilityMap(RasterMod raster, int skipCols, int cols, int skipRows, int rows) {
-        double[][] map = new double[rows][cols];
-        double[][] rasterData = raster.getData();
-
-        for (int j = 0; j < rows; j++) System.arraycopy(rasterData[j + skipRows], skipCols, map[j], 0, cols);
-
-        return map;
-    }
-
     public static List<double[][]> convertRastersToFertilityMaps(List<RasterMod> rasters) {
-        return convertRastersToFertilityMaps(rasters, 45, -10, 25, 40);
+        return convertRastersToFertilityMaps(rasters, 50, -10, 25, 40);
     }
 
     public static List<double[][]> convertRastersToFertilityMaps(List<RasterMod> rasters, int leftUpperLat, int leftUpperLon, int rightBottomLat, int rightBottomLon) {
@@ -29,6 +20,25 @@ public class RasterToMapConverter {
         for (RasterMod raster : rasters) maps.add(convertRasterToFertilityMap(raster, skipCols, cols, skipRows, rows));
 
         return maps;
+    }
+    
+    public static double[][] convertRasterToFertilityMap(RasterMod raster, int skipCols, int cols, int skipRows, int rows) {
+        double[][] map = new double[rows][cols];
+        double[][] rasterData = raster.getData();
+
+        for (int i = 0; i < rows; i++) System.arraycopy(rasterData[i + skipRows], skipCols, map[i], 0, cols);
+        for (int i = 0; i < rows; i++)
+        	for (int j = 0; j < cols; j++) {
+        		// 0 is for sea as it was originally, then the bigger number the better the soil 
+        		double val = map[i][j];
+        		if (val == 0)
+        			val = 0;
+        		else 
+        			val = 8 - val;
+        		map[i][j] = val;
+        	}
+
+        return map;
     }
 
 }

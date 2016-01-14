@@ -35,10 +35,8 @@ public class MapPanel extends JPanel {
 		int height = map.length;
     	for (int i=0; i<height; i++)
     		for (int j=0; j<width; j++) {
-    			Cell c = map[i][j];
-    			Color col = c.getColor();
-    			int rgb = col.getRGB();
-    			image.setRGB(j, i, rgb);
+    			Color col = map[i][j].getColor();
+    			image.setRGB(j, i, col.getRGB());
     		}
     	repaint();
     }

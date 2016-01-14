@@ -8,6 +8,8 @@ import main.Global;
 import map.MapHandler;
 
 public class Cell {
+	
+	private double[] POPULATION_SIZE_RANGES = {0, 0.35, 0.75, 0.90, 0.95};
    
     private int col;
     private int row;
@@ -48,12 +50,22 @@ public class Cell {
     }
     
     private void setInitColor() {
-    	if (this.fertility == 0) this.color = new Color(239, 255, 255);
+    	if (this.fertility == 0) this.color = new Color(230, 255, 255);
     	else this.color = new Color(255, 255, 255);
     }
     
     public void updateColor() {
-    	int times = getAgentsNumber() / (Global.MAX_AGENTS_CELL_LIMIT / Global.MAX_FERTILITY);
+    	if (fertility == 0) return;
+    	
+    	int times = 0;
+    	int agentsNumber = getAgentsNumber();
+      	for (int i = POPULATION_SIZE_RANGES.length - 1; i >= 0; i--) {
+      		if (agentsNumber > (int) (POPULATION_SIZE_RANGES[i] * Global.MAX_AGENTS_CELL_LIMIT)) {
+      			times = i;
+      			break;
+      		}
+      	}
+      	
     	Color c = getDominantCivilization();
     	for (int i=0; i<times; i++) c = c.darker();
     	this.color = c;
