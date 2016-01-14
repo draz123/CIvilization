@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import main.Global;
-import map.MapHandler;
 
 public class Cell {
 	
@@ -72,8 +71,9 @@ public class Cell {
     }
     
     public void addAgent(Agent agent) {
-    	// TODO: a temporary solution
+    	// TODO: fix this temporary solution
         if (!hasRoomForAgent()) return;
+        
         agents.add(agent);        
         Color agentsColor = agent.getColor();
         if (citizens.containsKey(agentsColor))

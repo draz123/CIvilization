@@ -1,10 +1,6 @@
 package abm;
 
 import java.awt.Color;
-import java.util.ArrayList;
-import java.util.Random;
-
-import map.MapHandler;
 
 public class Agent {
 

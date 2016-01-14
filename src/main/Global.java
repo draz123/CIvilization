@@ -2,7 +2,6 @@ package main;
 
 import java.awt.Color;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
@@ -17,9 +16,7 @@ public class Global {
     public static final int TURNS = 500;
 	public static final int TURN_TIME = 10;
 	public static final int CIVILIZATIONS_NR = 10;
-//	public static final int MAX_INIT_CIVIL_SIZE = 1000;
 	public static final int MAX_INIT_CIVIL_SIZE = 10;
-//	public static final int MAX_AGENTS_CELL_LIMIT = 7000;
 	public static final int MAX_AGENTS_CELL_LIMIT = 70;
 	public static final int MAX_FERTILITY = 7;
 	
@@ -67,7 +64,6 @@ public class Global {
 		for(int i=0; i<n; i++) {
 			int[] cords = setStartPosition(map);
 			Cell cell = map.getCell(cords[0], cords[1]);
-			// TODO: draw one from basic colors, not completely random!
 			Random r = new Random();
 			Color color = new Color(r.nextInt(50)+200, r.nextInt(50)+200, r.nextInt(50)+200);
 			for(int j=0; j<MAX_INIT_CIVIL_SIZE; j++) {

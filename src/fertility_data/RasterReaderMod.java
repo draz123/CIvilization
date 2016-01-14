@@ -84,6 +84,7 @@ public class RasterReaderMod {
                     System.out.println("Unknown line: " + line);
             }
         }
+        
         return raster;
     }
 }

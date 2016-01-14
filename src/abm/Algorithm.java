@@ -10,36 +10,33 @@ import map.MapHandler;
 public class Algorithm {
 
 	private static final int DEATH_TIME = 50 / Global.TURN_TIME;
-//	private static final int DEATH_TIME = 100 / Global.TURN_TIME;
-//	public static final int MIGRATION_CAUSE = 500; // if free room < MIGRATION_CAUSE, try to migrate
 	public static final int MIGRATION_CAUSE = 5; // if free room < MIGRATION_CAUSE, try to migrate
 	public static final int MIGRATION_PERCENT = 20;
 	public static final int TRAVEL_PERCENT = 10;
 
 	private MapHandler map;
+	int rows;
+	int cols;
 
 	public Algorithm(MapHandler map) {
 		this.map = map;
+		rows = map.getHeight();
+		cols = map.getWidth();
 	}
 	
-	public void nextTurn() {
-		int popSize1 = map.countAgents();
-		
+	public void nextTurn() {		
 		deathsAndBirths();
 		migrations();
-		nationPride();
-		
-		int popSize2 = map.countAgents();
-		boolean a = true;
+		elections();
 	}
 	
 	private void deathsAndBirths() {
-		int rows = map.getHeight();
-		int cols = map.getWidth();
 		Random r = new Random();
 		
-		for (int i=0; i<rows; i++) {
-			for (int j=0; j<cols; j++) {
+		// Tu mógłby się rozpoczynać proces dla mapy, w którym Elang/Go przebiegałby po niej i odpalał procesy dla każdej komórki, problem:
+		// jak przekazać mapę, jako strukturę zawierającą Cell, która zawiera w sobie Agent, HashMap, Color oraz sięga do globalnych stałych?
+		for (int i = 0; i < rows; i++) {
+			for (int j = 0; j < cols; j++) {
 				Cell c = map.getCell(i, j);
 				if (c.getAgentsNumber() == 0) continue;
 				ArrayList<Agent> youngAgents = new ArrayList<Agent>();
@@ -55,7 +52,7 @@ public class Algorithm {
 				for (Agent agent: c.agents) {
 					if (room == 0) 
 						break;
-					boolean succeedMakingABaby = r.nextInt(100) < (10-2*agent.getLifeTime())*10;
+					boolean succeedMakingABaby = r.nextInt(100) < 100 - 20 * agent.getLifeTime();
 					// TODO: make a parameter of it
 					if (succeedMakingABaby) { 
 						newborns.add(new Agent(agent.getColor()));
@@ -66,42 +63,40 @@ public class Algorithm {
 					c.addAgent(newborn);
 			}
 		}
+		// Tu kończyłby się proces dla mapy,
+		// jak odebrać tę mapę?
 	}
 	
 	private void migrations() {
-		int rows = map.getHeight();
-		int cols = map.getWidth();
-		
-		for (int i=0; i<rows; i++) {
-			for (int j=0; j<cols; j++) {
+		for (int i = 0; i < rows; i++) {
+			for (int j = 0; j < cols; j++) {
 				Cell c = map.getCell(i, j);
 				if (c.getAgentsNumber() == 0) continue;
 				ArrayList<Cell> neighbours = map.getNeighbours(i, j);
 				if (c.getFreeRoom() < MIGRATION_CAUSE) 
 					migrate(c, neighbours, MIGRATION_PERCENT * c.getAgentsNumber() / 100);
-				migrate(c, neighbours, TRAVEL_PERCENT/100 * c.getAgentsNumber());
+				migrate(c, neighbours, TRAVEL_PERCENT * c.getAgentsNumber() / 100);
 			}
 		}
 	}
 	
-	private void nationPride() {
-		int rows = map.getHeight();
-		int cols = map.getWidth();
-		
-		for (int i=0; i<rows; i++) {
-			for (int j=0; j<cols; j++) {
+	private void elections() {
+		// Tu mógłby się rozpoczynać proces dla mapy, w którym Elang/Go przebiegałby po niej i odpalał procesy dla każdej komórki
+		for (int i = 0; i < rows; i++) {
+			for (int j = 0; j < cols; j++) {
 				Cell c = map.getCell(i, j);
 				if (c.getAgentsNumber() != 0) c.updateColor();
 			}
 		}
+		// Tu kończyłby się proces dla mapy
 	}
 	
 	private void migrate(Cell c, ArrayList<Cell> neighbours, int migrantsNumber) {
 		Random r = new Random();
 		if (neighbours.size() == 0) return;
 		
-		for (int i=0; i<migrantsNumber; i++) {
-			int index = c.getAgentsNumber()-1; //TODO: better migrants' choice
+		for (int i = 0; i < migrantsNumber; i++) {
+			int index = r.nextInt(c.getAgentsNumber()); //TODO: better migrants' choice
 			Agent agent = c.agents.get(index);
 			Cell destination = neighbours.get(r.nextInt(neighbours.size()));
 			if (destination.hasRoomForAgent()) {
