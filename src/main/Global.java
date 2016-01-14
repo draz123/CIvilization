@@ -16,7 +16,7 @@ public class Global {
 
     public static final int TURNS = 500;
 	public static final int TURN_TIME = 10;
-	public static final int CIVILIZATIONS_NR = 7;
+	public static final int CIVILIZATIONS_NR = 10;
 //	public static final int MAX_INIT_CIVIL_SIZE = 1000;
 	public static final int MAX_INIT_CIVIL_SIZE = 10;
 //	public static final int MAX_AGENTS_CELL_LIMIT = 7000;

@@ -9,7 +9,7 @@ import map.MapHandler;
 
 public class Cell {
 	
-	private double[] POPULATION_SIZE_RANGES = {0, 0.35, 0.75, 0.90, 0.95};
+	private double[] POPULATION_SIZE_RANGES = {0, 0.50, 0.80, 0.90, 0.95};
    
     private int col;
     private int row;
