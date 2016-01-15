@@ -3,17 +3,18 @@ package abm;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map.Entry;
 
 import main.Global;
 
-public class Cell {
+public class Cell implements Comparable{
 	
 	private double[] POPULATION_SIZE_RANGES = {0, 0.50, 0.80, 0.90, 0.95};
    
     private int col;
     private int row;
     private int fertility;
-    private int maxAgentsNr;
+    private int LocalAgentLimiet;
     private Color color;
     protected ArrayList<Agent> agents;
     private HashMap<Color, Integer> citizens;
@@ -26,7 +27,7 @@ public class Cell {
     	this.fertility = fertility;
         this.col = col;
         this.row = row;
-        maxAgentsNr = Global.MAX_AGENTS_CELL_LIMIT / Global.MAX_FERTILITY * fertility;
+        LocalAgentLimiet = Global.MAX_AGENTS_CELL_LIMIT / Global.MAX_FERTILITY * fertility;
         setInitColor();
         agents = new ArrayList<Agent>();
         citizens = new HashMap<Color, Integer>();
@@ -57,7 +58,7 @@ public class Cell {
     	if (fertility == 0) return;
     	
     	int times = 0;
-    	int agentsNumber = getAgentsNumber();
+    	int agentsNumber = getAgentsSize();
       	for (int i = POPULATION_SIZE_RANGES.length - 1; i >= 0; i--) {
       		if (agentsNumber > (int) (POPULATION_SIZE_RANGES[i] * Global.MAX_AGENTS_CELL_LIMIT)) {
       			times = i;
@@ -72,7 +73,7 @@ public class Cell {
     
     public void addAgent(Agent agent) {
     	// TODO: fix this temporary solution
-        if (!hasRoomForAgent()) return;
+        if (!hasAvailableSpace()) return;
         
         agents.add(agent);        
         Color agentsColor = agent.getColor();
@@ -88,28 +89,41 @@ public class Cell {
     	agents.remove(i);
     }
     
-    public int getAgentsNumber() {
+    public void removeAgent(Agent i) {
+    	Color agentsColor = agents.get(agents.indexOf(i)).getColor();
+    	citizens.put(agentsColor, citizens.get(agentsColor)-1);
+    	agents.remove(i);
+    }
+    
+    public int getAgentsSize() {
     	return agents.size();
     }
     
     public Color getDominantCivilization() {
     	if (citizens.entrySet().size() == 0) return color;
     	
-    	HashMap.Entry<Color, Integer> maxEntry = null;
+    	Entry<Color, Integer> maxEntry = null;
 
-    	for (HashMap.Entry<Color, Integer> entry : citizens.entrySet())
+    	for (Entry<Color, Integer> entry : citizens.entrySet())
     	    if (maxEntry == null || entry.getValue().compareTo(maxEntry.getValue()) > 0)
     	        maxEntry = entry;
     	
     	return maxEntry.getKey();
     }
     
-    public boolean hasRoomForAgent() {
-    	return getFreeRoom() > 0;
+    public boolean hasAvailableSpace() {
+    	return getAvailableSpace() > 0;
     }
     
-    public int getFreeRoom() {
-    	return maxAgentsNr - getAgentsNumber();
+    public int getAvailableSpace() {
+    	return LocalAgentLimiet - getAgentsSize();
     }
+
+	@Override
+	public int compareTo(Object o) {
+		int comparedAvailableSpace = ((Cell) o).getAvailableSpace(); 
+		return comparedAvailableSpace-this.getAvailableSpace() ;
+
+	}
     
 }

@@ -84,7 +84,7 @@ public class MapHandler {
     	int sum = 0;
     	for (int i=0; i<rows; i++)
     		for (int j=0; j<cols; j++)
-    			sum += map[i][j].getAgentsNumber();
+    			sum += map[i][j].getAgentsSize();
     	
     	return sum;
     }
