@@ -93,9 +93,9 @@ public class Algorithm {
 		// przebiegalby po niej i odpalal procesy dla kazdej komorki
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < cols; j++) {
-				Cell c = map.getCell(i, j);
-				if (c.getAgentsSize() != 0)
-					c.updateColor();
+				Cell currentCell = map.getCell(i, j);
+				if (currentCell.getAgentsSize() != 0)
+					currentCell.updateColor();
 			}
 		}
 		// Tu konczylby sie proces dla mapy
@@ -105,8 +105,7 @@ public class Algorithm {
 		Random r = new Random();
 		if (neighbours.size() == 0)
 			return;
-
-		for (int i = 0; i < migrantsNumber; i++) {
+		for (int i = 0; i < migrantsNumber; i++) { 
 			int index = r.nextInt(currentCell.getAgentsSize()); //TODO: better migrants' choice
 			Agent agent = currentCell.agents.get(index);
 			Cell destination = neighbours.get(r.nextInt(neighbours.size()));
@@ -116,6 +115,5 @@ public class Algorithm {
 			}
 		}
 	}
-
 
 }
