@@ -14,7 +14,7 @@ public class Cell implements Comparable {
 	private int col;
 	private int row;
 	private int fertility;
-	private int localAgentLimiet;
+	private int agentsSizeLimit;
 	private Color color;
 	protected ArrayList<Agent> agents;
 	private HashMap<Color, Integer> citizens;
@@ -27,7 +27,7 @@ public class Cell implements Comparable {
 		this.fertility = fertility;
 		this.col = col;
 		this.row = row;
-		localAgentLimiet = Global.MAX_AGENTS_CELL_LIMIT / Global.MAX_FERTILITY * fertility;
+		agentsSizeLimit = Global.MAX_AGENTS_CELL_LIMIT / Global.MAX_FERTILITY * fertility;
 		setInitColor();
 		agents = new ArrayList<Agent>();
 		citizens = new HashMap<Color, Integer>();
@@ -118,7 +118,7 @@ public class Cell implements Comparable {
 	}
 
 	public int getAvailableSpace() {
-		return localAgentLimiet - getAgentsSize();
+		return agentsSizeLimit - getAgentsSize();
 	}
 
 	@Override

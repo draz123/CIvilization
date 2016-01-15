@@ -59,9 +59,9 @@ public class Algorithm {
 				for (Agent agent : currentCell.agents) {
 					if (availableSpace == 0)
 						break;
-					boolean isNewBaby = r.nextInt(100) < 100 - 20 * agent.getLifeTime();
+					boolean bornNewBaby = r.nextInt(100) < 100 - 20 * agent.getLifeTime();
 					// TODO: make a parameter of it
-					if (isNewBaby) {
+					if (bornNewBaby) {
 						newborns.add(new Agent(agent.getColor()));
 						availableSpace--;
 					}
@@ -70,7 +70,7 @@ public class Algorithm {
 					currentCell.addAgent(newborn);
 			}
 		}
-		// Tu kozczylby sie proces dla mapy,
+		// Tu konczylby sie proces dla mapy,
 		// jak odebrac te mape?
 	}
 
