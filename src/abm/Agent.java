@@ -2,7 +2,7 @@ package abm;
 
 import java.awt.Color;
 
-public class Agent implements Comparable{
+public class Agent {
 
 	private Color color;
 	private int lifeTime; 
@@ -22,13 +22,6 @@ public class Agent implements Comparable{
 
 	public Color getColor() {
 		return color;
-	}
-	
-	@Override
-	public int compareTo(Object o) {
-		int comparedLifeTime = ((Agent) o).getLifeTime(); 
-		return this.getLifeTime()-comparedLifeTime ;
-
 	}
 
 }
