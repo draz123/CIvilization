@@ -11,9 +11,7 @@ import map.MapHandler;
 public class Algorithm {
 
 	private static final int DEATH_TIME = 50 / Global.TURN_TIME;
-	public static final int MIGRATION_CAUSE = 5; // if free room <
-													// MIGRATION_CAUSE, try to
-													// migrate
+	public static final int MIGRATION_CAUSE = 5; // if free room < MIGRATION_CAUSE, try to migrate
 	public static final int MIGRATION_PERCENT = 20;
 	public static final int TRAVEL_PERCENT = 10;
 
@@ -36,10 +34,6 @@ public class Algorithm {
 	private void deathsAndBirths() {
 		Random r = new Random();
 
-		// Tu moglby sie rozpoczynac proces dla mapy, w ktorym Elang/Go
-		// przebiegalby po niej i odpalal procesy dla kazdej komorki, problem:
-		// jak przekazac mape, jako strukture zawierajaca Cell, ktora zawiera w
-		// sobie Agent, HashMap, Color oraz siega do globalnych stalych?
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < cols; j++) {
 				Cell currentCell = map.getCell(i, j);
@@ -70,8 +64,6 @@ public class Algorithm {
 					currentCell.addAgent(newborn);
 			}
 		}
-		// Tu konczylby sie proces dla mapy,
-		// jak odebrac te mape?
 	}
 
 	private void migrations() {
@@ -89,8 +81,6 @@ public class Algorithm {
 	}
 
 	private void elections() {
-		// Tu moglby sie rozpoczynac proces dla mapy, w ktorym Elang/Go
-		// przebiegalby po niej i odpalal procesy dla kazdej komorki
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < cols; j++) {
 				Cell currentCell = map.getCell(i, j);
@@ -98,7 +88,6 @@ public class Algorithm {
 					currentCell.updateColor();
 			}
 		}
-		// Tu konczylby sie proces dla mapy
 	}
 
 	private void migrate(Cell currentCell, ArrayList<Cell> neighbours, int migrantsNumber) {

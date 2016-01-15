@@ -23,21 +23,21 @@ public class Global {
 	public static HashMap<Color, String> civilizations = new HashMap<>();
 	
     public static void main(String args[]) throws IOException, RuntimeException {
-        System.out.println("Program started,\nSetting up simulation parameters:\n");
+        System.out.println("Program started!\nSetting up simulation parameters...\n");
        
         System.out.println("Map loading...");
         MapHandler map = new MapHandler();
-        System.out.println("Map loaded");
-        
-        System.out.println("Setting civilizations' positions...");
-        setCivilizations(map, CIVILIZATIONS_NR);
-        System.out.print("Societies set\n");
+        System.out.println("Map loaded!\n");
         
         System.out.println("Setting up the visualization...");
         MapVisualizer visual = new MapVisualizer(map.getWidth(), map.getHeight());
-        System.out.println("Visualization set");
+        System.out.println("Visualization set!\n");
+
+        System.out.println("Setting civilizations' positions...");
+        setCivilizations(map, CIVILIZATIONS_NR);
+        System.out.println("Societies set!\n");
         
-        System.out.println("Starting simulation");
+        System.out.println("Starting simulation...");
         Algorithm alg = new Algorithm(map);
         for (int i = 0; i < TURNS; i++) {
             visual.paintMap(map.getMap(), i);
@@ -46,7 +46,7 @@ public class Global {
             alg.nextTurn();
         }
         visual.paintMap(map.getMap(), 0);
-        System.out.println("End of simulation");
+        System.out.println("End of simulation!\n");
     }
     
 	private static int[] setStartPosition(MapHandler map) {
