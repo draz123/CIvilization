@@ -33,6 +33,16 @@ public class Global {
         MapVisualizer visual = new MapVisualizer(map.getWidth(), map.getHeight());
         System.out.println("Visualization set!\n");
 
+        /* Erlang/Go
+         * 
+         * Here the connection to an Erlang/Go program is set 
+         * and the map (list of lists of fertility) is sent to it.
+         * Agent, Algorithm, Cell classes and MapHandler's simulation-relevant logic
+         * all need to be implemented in the program.
+         * The program sends a map of colors back to Java thread every turn, 
+         * which is then visualized.  
+         * 
+         */
         System.out.println("Setting civilizations' positions...");
         setCivilizations(map, CIVILIZATIONS_NR);
         System.out.println("Societies set!\n");
@@ -46,6 +56,10 @@ public class Global {
             alg.nextTurn();
         }
         visual.paintMap(map.getMap(), 0);
+        /* Erlang/Go
+         * 
+         * Here the connection to Erlang/Go is closed 
+         */
         System.out.println("End of simulation!\n");
     }
     
