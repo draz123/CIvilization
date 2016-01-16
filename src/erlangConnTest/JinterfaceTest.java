@@ -1,4 +1,4 @@
-package erlangConnectionTest;
+package erlangConnTest;
 
 import java.io.IOException;
 import com.ericsson.otp.erlang.*;
