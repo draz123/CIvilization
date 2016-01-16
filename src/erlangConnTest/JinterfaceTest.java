@@ -17,25 +17,6 @@ public class JinterfaceTest {
     }
     
     public void test(MapHandler map) throws Exception {
-    	int rows = map.getHeight();
-		int cols = map.getWidth();
-    	
-		OtpErlangObject[] msgToSend = new OtpErlangObject[rows*cols + 1]; //jedynka dla identyfikatora procesu
-    	int erlangListCounter = 1;
-    	
-    	System.out.println("Before loops; array size = " + map.getWidth() + " " +map.getHeight());
-    	
-    	for (int i = 0; i < rows; i++) {
-			for (int j = 0; j < cols; j++) {
-				//System.out.println("i = " + i);
-				//System.out.println("j = " + j);
-				Cell currentCell = map.getCell(i,j);
-				Integer currentCellFertility = new Integer(currentCell.getFertility());
-				msgToSend[erlangListCounter++] = new OtpErlangAtom(currentCellFertility.toString());
-			}
-		}
-    	
-    	
         try {
             self = new OtpNode("mynode", "test");
             mbox = self.createMbox("facserver");
@@ -49,31 +30,43 @@ public class JinterfaceTest {
         } catch (IOException e1) {
             e1.printStackTrace();
         }
- 
-        //OtpErlangObject[] msgToSend = new OtpErlangObject[4];
-        msgToSend[0] = mbox.self(); //pierwszym elementem jest PID nodA javy
-       // msgToSend[1] = new OtpErlangAtom("ping1");
-       // msgToSend[2] = new OtpErlangAtom("ping2");
-       // msgToSend[3] = new OtpErlangAtom("ping3");
         
-       // OtpErlangTuple tuple = new OtpErlangTuple(msgToSend);
+    	int rows = map.getHeight();
+		int cols = map.getWidth();
+    	
+		OtpErlangObject[] msgToSend = new OtpErlangObject[rows*cols + 1]; //jedynka dla identyfikatora procesu
+		msgToSend[0] = mbox.self(); //pierwszym elementem jest PID procesu utworzonego w Jabie
+		
+    	int erlangListCounter = 1;
+    	
+    	for (int i = 0; i < rows; i++) {
+			for (int j = 0; j < cols; j++) {
+				Cell currentCell = map.getCell(i,j);
+				//Integer currentCellFertility = new Integer(currentCell.getFertility());
+				int currentCellFertility = currentCell.getFertility();
+				msgToSend[erlangListCounter++] = new OtpErlangInt(currentCellFertility);
+			}
+		}
+       
         OtpErlangList list = new OtpErlangList(msgToSend);
-        //mbox.send("pong", server, tuple);
         mbox.send("pong", server, list);
         System.out.println("wyslane");
         
-        while (true)
+        while (true) {
             try {
-                OtpErlangObject erlangObject = mbox.receive();  
+                OtpErlangObject erlangObject = mbox.receive();
                 System.out.println("erlangObject.toString()" + erlangObject.toString());
                 
-                OtpErlangTuple erlangTuple = (OtpErlangTuple) erlangObject; //na poczatku odbieram krotke, pierwszy element to atom z ID procesu
+                OtpErlangTuple erlangTuple = (OtpErlangTuple) erlangObject; //odbieram KROTKE (za nic nie da sie odebrac listy), pierwszy element to atom z ID procesu
                 OtpErlangPid erlangProcessPid = (OtpErlangPid)erlangTuple.elementAt(0); //wyciagam ID, to dziala jak nalezy
                 
                 OtpErlangObject[] erlangObjectArray = erlangTuple.elements();
                 
                 for (int i = 0; i < erlangObjectArray.length; i++) {
-                	System.out.println(i + " = " + erlangObjectArray[i].toString());
+                	if(i>0) {
+                		int liczba = Integer.parseInt(erlangObjectArray[i].toString());;
+                		System.out.println(i + " = " + liczba);
+                	}
 				}
                 
                 System.out.println("Message: " + erlangObjectArray.toString() + " received from:  " + erlangProcessPid.toString());
@@ -88,6 +81,7 @@ public class JinterfaceTest {
             } catch (OtpErlangDecodeException e) {
                 e.printStackTrace();
             }
+        }
     }
 
     
