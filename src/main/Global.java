@@ -10,6 +10,7 @@ import abm.Algorithm;
 import abm.Cell;
 import map.MapHandler;
 import visual.MapVisualizer;
+import erlangConnTest.JinterfaceTest;
 
 public class Global {
 
@@ -23,11 +24,21 @@ public class Global {
 	public static HashMap<Color, String> civilizations = new HashMap<>();
 	
     public static void main(String args[]) throws IOException, RuntimeException {
+    	
         System.out.println("Program started!\nSetting up simulation parameters...\n");
        
         System.out.println("Map loading...");
         MapHandler map = new MapHandler();
         System.out.println("Map loaded!\n");
+        
+    	JinterfaceTest o = new JinterfaceTest();
+    	try {
+			o.test(map);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        
         
         System.out.println("Setting up the visualization...");
         MapVisualizer visual = new MapVisualizer(map.getWidth(), map.getHeight());

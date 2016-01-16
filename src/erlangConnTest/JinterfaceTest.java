@@ -2,13 +2,35 @@ package erlangConnTest;
 
 import java.io.IOException;
 import com.ericsson.otp.erlang.*;
+
+import abm.Cell;
+import map.MapHandler;
  
 public class JinterfaceTest {
     static String server = "server";
- 
-    public static void main(String[] _args) throws Exception {
-    	OtpNode self = null;
-        OtpMbox mbox = null;
+    OtpNode self;
+    OtpMbox mbox; 
+    
+    public JinterfaceTest() {
+    	self = null;
+    	mbox = null;
+    }
+    
+    public void test(MapHandler map) throws Exception {
+    	OtpErlangObject[] msgToSend = new OtpErlangObject[map.getWidth()*map.getHeight() + 1]; //jedynka dla identyfikatora procesu
+    	int erlangListCounter = 1;
+    	
+    	System.out.println("Przed petlami = " + map.getWidth()*map.getHeight() + 1);
+    	
+    	for (int i = 0; i < map.getWidth(); i++) {
+			for (int j = 0; j < map.getHeight(); j++) {
+				Cell currentCell = map.getCell(i,j);
+				Integer currentCellFertility = new Integer(currentCell.getFertility());
+				msgToSend[erlangListCounter++] = new OtpErlangAtom(currentCellFertility.toString());
+			}
+		}
+    	
+    	
         try {
             self = new OtpNode("mynode", "test");
             mbox = self.createMbox("facserver");
@@ -23,14 +45,14 @@ public class JinterfaceTest {
             e1.printStackTrace();
         }
  
-        OtpErlangObject[] msg = new OtpErlangObject[4];
-        msg[0] = mbox.self(); //pierwszym elementem jest PID nodA javy
-        msg[1] = new OtpErlangAtom("ping1");
-        msg[2] = new OtpErlangAtom("ping2");
-        msg[3] = new OtpErlangAtom("ping3");
+        //OtpErlangObject[] msgToSend = new OtpErlangObject[4];
+        msgToSend[0] = mbox.self(); //pierwszym elementem jest PID nodA javy
+       // msgToSend[1] = new OtpErlangAtom("ping1");
+       // msgToSend[2] = new OtpErlangAtom("ping2");
+       // msgToSend[3] = new OtpErlangAtom("ping3");
         
-       // OtpErlangTuple tuple = new OtpErlangTuple(msg);
-        OtpErlangList list = new OtpErlangList(msg);
+       // OtpErlangTuple tuple = new OtpErlangTuple(msgToSend);
+        OtpErlangList list = new OtpErlangList(msgToSend);
         //mbox.send("pong", server, tuple);
         mbox.send("pong", server, list);
         System.out.println("wyslane");
@@ -64,4 +86,6 @@ public class JinterfaceTest {
                 e.printStackTrace();
             }
     }
+
+    
 }
