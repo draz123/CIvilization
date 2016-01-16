@@ -14,7 +14,7 @@ pong() ->
             io:format("Odebrana lista ma: ~p elementow~n", [length(Lista)]),
 			%printL(Lista),
 			Koniec = [1,2,3,4],
-			PingId ! Koniec,
+			PingId ! Koniec,  %wyœlij "koniec" do procesu o identyfikatorze PingId (odebrany na gorze od procesu z Javy)
             pong()
     end.
  
