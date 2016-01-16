@@ -1,23 +1,23 @@
 -module(erl_proc).
--export([start/0,pong/0,printL/1]).
+-export([start/0, pong/0, printL/1]).
     
 pong() ->
-    receive
-        stop ->
-            io:format("Pong finished...~n",[]);
-		[] ->
-			io:format("otrzymano pusta liste", []);
-        [PingId|Lista] ->
-            io:format("Odebrana lista ma: ~p elementow~n", [length(Lista)]),
-			DoWyslania = {self(),1,2,3,4},
-			PingId ! DoWyslania, %wyœlij "DoWyslania" do procesu o identyfikatorze PingId (odebrany na gorze od procesu z Javy)
-            pong()
-    end.
+  receive
+    [PingId|Lista] ->
+      io:format("Odebrana lista ma: ~p elementow~n", [length(Lista)]),
+			DoWyslania = {self(), 1, 2, 3, 4},
+			PingId ! DoWyslania, %wyslij "DoWyslania" do procesu o identyfikatorze PingId (odebrany na gorze od procesu z Javy)
+      pong()
+      [] ->
+  		io:format("otrzymano pusta liste", []);
+    stop ->
+      io:format("Pong finished...~n",[]);
+  end.
  
 start() ->
-        register(pong,spawn(hello_world,pong,[])).
-		%spawn(Module,Name,[Args_list]) -> pid()
-		%register(Name, PID)
+  register(pong, spawn(erl_proc, pong, [])).
+	%spawn(Module,Name,[Args_list]) -> pid()
+	%register(Name, PID)
 		
 printL([H|T]) ->
 	%io:format("rozmiar = ~p~n", [length(T)]),
