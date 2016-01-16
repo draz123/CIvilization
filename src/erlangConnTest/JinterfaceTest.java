@@ -17,13 +17,18 @@ public class JinterfaceTest {
     }
     
     public void test(MapHandler map) throws Exception {
-    	OtpErlangObject[] msgToSend = new OtpErlangObject[map.getWidth()*map.getHeight() + 1]; //jedynka dla identyfikatora procesu
+    	int rows = map.getHeight();
+		int cols = map.getWidth();
+    	
+		OtpErlangObject[] msgToSend = new OtpErlangObject[rows*cols + 1]; //jedynka dla identyfikatora procesu
     	int erlangListCounter = 1;
     	
-    	System.out.println("Przed petlami = " + map.getWidth()*map.getHeight() + 1);
+    	System.out.println("Before loops; array size = " + map.getWidth() + " " +map.getHeight());
     	
-    	for (int i = 0; i < map.getWidth(); i++) {
-			for (int j = 0; j < map.getHeight(); j++) {
+    	for (int i = 0; i < rows; i++) {
+			for (int j = 0; j < cols; j++) {
+				//System.out.println("i = " + i);
+				//System.out.println("j = " + j);
 				Cell currentCell = map.getCell(i,j);
 				Integer currentCellFertility = new Integer(currentCell.getFertility());
 				msgToSend[erlangListCounter++] = new OtpErlangAtom(currentCellFertility.toString());
@@ -72,9 +77,7 @@ public class JinterfaceTest {
 				}
                 
                 System.out.println("Message: " + erlangObjectArray.toString() + " received from:  " + erlangProcessPid.toString());
-                
-                //System.out.println("Message: " + rmsg + " received from:  " + fromPid.toString());
-                
+                              
                 OtpErlangAtom ok = new OtpErlangAtom("stop"); //atom 'stop' zatrzymuje dzialanie procesu w erlangu
                 mbox.send(erlangProcessPid, ok);
                 break;
