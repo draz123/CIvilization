@@ -41,24 +41,20 @@ public class JinterfaceTest {
                 System.out.println("erlangObject.toString()" + erlangObject.toString());
                 
                 OtpErlangTuple erlangTuple = (OtpErlangTuple) erlangObject; //na poczatku odbieram krotke, pierwszy element to atom z ID procesu
-                OtpErlangPid fromPid = (OtpErlangPid)erlangTuple.elementAt(0); //wyciagam ID, to dziala jak nalezy
-                OtpErlangList rList = (OtpErlangList) erlangObject;
+                OtpErlangPid erlangProcessPid = (OtpErlangPid)erlangTuple.elementAt(0); //wyciagam ID, to dziala jak nalezy
                 
+                OtpErlangObject[] erlangObjectArray = erlangTuple.elements();
                 
-                //OtpErlangList rList = new OtpErlangList(rtuple.elementAt(1)); //wyciagam liste z krotki
-                OtpErlangObject[] a = new OtpErlangObject[4];
-               // a = rList.elements();
-                System.out.println(rList.elementAt(0).toString());
-                System.out.println(rList.elementAt(1).toString());
-                System.out.println(rList.elementAt(2).toString());
-                System.out.println(rList.elementAt(3));
-                //OtpErlangObject rmsg = rList.elementAt(1);
-                System.out.println("Message: " + a[0] + " received from:  " + fromPid.toString());
+                for (int i = 0; i < erlangObjectArray.length; i++) {
+                	System.out.println(i + " = " + erlangObjectArray[i].toString());
+				}
+                
+                System.out.println("Message: " + erlangObjectArray.toString() + " received from:  " + erlangProcessPid.toString());
                 
                 //System.out.println("Message: " + rmsg + " received from:  " + fromPid.toString());
- 
-                OtpErlangAtom ok = new OtpErlangAtom("stop");
-                mbox.send(fromPid, ok);
+                
+                OtpErlangAtom ok = new OtpErlangAtom("stop"); //atom 'stop' zatrzymuje dzialanie procesu w erlangu
+                mbox.send(erlangProcessPid, ok);
                 break;
  
             } catch (OtpErlangExit e) {
