@@ -12,13 +12,13 @@ public class SocketServer {
 	private static ServerSocket serverSocket;
 
 	public static void startServer() {
-		System.out.println("while poszedl");
 		boolean runningFlag = true;
 		
 		int portNumber = 8888;
 		
 		try {
 			serverSocket = new ServerSocket(portNumber);
+			System.out.println("Server started with port: " + portNumber);
 			//PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
 			//BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 			PrintWriter out;
@@ -34,7 +34,8 @@ public class SocketServer {
 				while ((inputLine = in.readLine()) != null) {
 					out.println(inputLine);
 					System.out.println(inputLine);
-					if(inputLine.equals("stop")) {
+					if(inputLine.matches(".*stop.*")) {
+						System.out.println("...kill me please... ");
 						runningFlag = false;
 					}
 				}
@@ -49,6 +50,7 @@ public class SocketServer {
 		if(!serverSocket.isClosed())
 			try {
 				serverSocket.close();
+				System.out.println("Server closed");
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
