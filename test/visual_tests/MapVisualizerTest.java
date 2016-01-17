@@ -10,7 +10,7 @@ import visual.MapVisualizer;
 
 public class MapVisualizerTest {
 	
-	public static void main(String args[]) {
+/*	public static void main(String args[]) {
 		
 		int width = 600;
 		int height = 600;
@@ -31,4 +31,5 @@ public class MapVisualizerTest {
 		}
 		visual.paintMap(map, 1);
 	}
+*/
 }
