@@ -8,7 +8,7 @@ import (
 
 func main() {
     fmt.Println("start client")
-    conn, err := net.Dial("tcp", "localhost:4444")
+    conn, err := net.Dial("tcp", "localhost:8888") //pamietaj o zmienie portow
     if err != nil {
         log.Fatal("Connection error", err)
     }
