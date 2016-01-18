@@ -111,12 +111,13 @@ public class Algorithm {
 	}
 	
 	public static void loadParameters() throws IOException {
+		
 		File fileToRead = new File("app.conf");
 		if(fileToRead.exists()) {
 			byte[] encoded = Files.readAllBytes(Paths.get("app.conf"));
 			String str = new String(encoded, StandardCharsets.UTF_8);
 			
-			String[] tokens = str.split(";");
+			str = str.replace("\n", "").replace("\r", "");
 			int[] tab = {
 					DEATH_TIME,
 					MIGRATION_CAUSE,
@@ -124,14 +125,22 @@ public class Algorithm {
 					TRAVEL_PERCENT
 					};
 			
-			for (int i = 6; i < tokens.length; i++) {
-				Scanner scanner = new Scanner(tokens[i]);
-				if(scanner.hasNext())
-					if(scanner.hasNextBigInteger())
-						tab[i-7] = scanner.nextInt();
-				scanner.close();
+			str = str.replaceAll("[^\\d;]", "");
+			
+			Scanner scanner = new Scanner(str);
+			scanner.useDelimiter(";");
+			
+			int i = 0;
+			while(scanner.hasNext() && i <= 9){
+				if(scanner.hasNextInt()){
+					int tmp = Integer.parseInt(scanner.next());
+					if(i>=6)
+						tab[i-6] = tmp;
+					i++;
+				}
 			}
+			scanner.close();
 		}
-}
+	}
 
 }

@@ -107,11 +107,7 @@ public class Global {
 			byte[] encoded = Files.readAllBytes(Paths.get("app.conf"));
 			String str = new String(encoded, StandardCharsets.UTF_8);
 			
-			//System.err.println("PRZECZYTANE: " + str);
-			String[] tokens = str.split(";");
-			for (int i = 0; i < tokens.length; i++) {
-				//System.err.println(tokens[i]);
-			}
+			str = str.replace("\n", "").replace("\r", "");
 			int[] tab = {
 					TURNS, 
 					TURN_TIME, 
@@ -121,13 +117,20 @@ public class Global {
 					MAX_FERTILITY
 					};
 			
-			for (int i = 0; i < tab.length; i++) {
-				Scanner scanner = new Scanner(tokens[i]);
-				if(scanner.hasNext())
-					if(scanner.hasNextBigInteger())
-						tab[i] = scanner.nextInt();
-				scanner.close();
+			str = str.replaceAll("[^\\d;]", "");
+			
+			Scanner scanner = new Scanner(str);
+			scanner.useDelimiter(";");
+			
+			int i = 0;
+			while(scanner.hasNext() && i <= 5){
+				if(scanner.hasNextInt()){
+					int tmp = Integer.parseInt(scanner.next());
+					tab[i++] = tmp; 
+				}
 			}
+			scanner.close();
+			
 		}
 	}
 }
