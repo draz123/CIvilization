@@ -1,9 +1,14 @@
 package main;
 
 import java.awt.Color;
+import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Random;
+import java.util.Scanner;
 
 import abm.Agent;
 import abm.Algorithm;
@@ -13,18 +18,20 @@ import visual.MapVisualizer;
 
 public class Global {
 
-    public static final int TURNS = 500;
-	public static final int TURN_TIME = 10;
-	public static final int CIVILIZATIONS_NR = 10;
-	public static final int MAX_INIT_CIVIL_SIZE = 10;
-	public static final int MAX_AGENTS_CELL_LIMIT = 70;
-	public static final int MAX_FERTILITY = 7;
+    public static  int TURNS = 500;
+	public static  int TURN_TIME = 10;
+	public static  int CIVILIZATIONS_NR = 10;
+	public static  int MAX_INIT_CIVIL_SIZE = 10;
+	public static  int MAX_AGENTS_CELL_LIMIT = 70;
+	public static  int MAX_FERTILITY = 7;
 	
 	public static HashMap<Color, String> civilizations = new HashMap<>();
 	
     public static void main(String args[]) throws IOException, RuntimeException {
-        System.out.println("Program started!\nSetting up simulation parameters...\n");
-       
+    	Global.loadParameters();
+        Algorithm.loadParameters();
+        
+    	System.out.println("Program started!\nSetting up simulation parameters...\n");
         System.out.println("Map loading...");
         MapHandler map = new MapHandler();
         System.out.println("Map loaded!\n");
@@ -86,5 +93,36 @@ public class Global {
 			cell.updateColor();
 			civilizations.put(color, "Civ " + i);
 		}
-	}    
+	}
+	
+	private static void loadParameters() throws IOException {
+		
+		File fileToRead = new File("app.conf");
+		if(fileToRead.exists()) {
+			byte[] encoded = Files.readAllBytes(Paths.get("app.conf"));
+			String str = new String(encoded, StandardCharsets.UTF_8);
+			
+			//System.err.println("PRZECZYTANE: " + str);
+			String[] tokens = str.split(";");
+			for (int i = 0; i < tokens.length; i++) {
+				//System.err.println(tokens[i]);
+			}
+			int[] tab = {
+					TURNS, 
+					TURN_TIME, 
+					CIVILIZATIONS_NR, 
+					MAX_INIT_CIVIL_SIZE,
+					MAX_AGENTS_CELL_LIMIT,
+					MAX_FERTILITY
+					};
+			
+			for (int i = 0; i < tab.length; i++) {
+				Scanner scanner = new Scanner(tokens[i]);
+				if(scanner.hasNext())
+					if(scanner.hasNextBigInteger())
+						tab[i] = scanner.nextInt();
+				scanner.close();
+			}
+		}
+	}
 }
