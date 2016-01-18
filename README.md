@@ -1,3 +1,0 @@
-# Civilization
-
-Eclipse project
