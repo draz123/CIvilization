@@ -130,7 +130,6 @@ public class Global {
 				}
 			}
 			scanner.close();
-			
 		}
 	}
 }
