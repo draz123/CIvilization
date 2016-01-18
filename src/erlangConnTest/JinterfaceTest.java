@@ -7,18 +7,14 @@ import abm.Cell;
 import map.MapHandler;
  
 public class JinterfaceTest {
+	
     static String server = "server";
     OtpNode self;
     OtpMbox mbox; 
     
-    public JinterfaceTest() {
-    	self = null;
-    	mbox = null;
-    }
-    
     public void test(MapHandler map) throws Exception {
         try {
-            self = new OtpNode("mynode", "test");
+            self = new OtpNode("mynode", "test"); // node, cookie
             mbox = self.createMbox("facserver");
  
             if (self.ping(server, 2000)) {

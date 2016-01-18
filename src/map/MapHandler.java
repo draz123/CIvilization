@@ -88,4 +88,13 @@ public class MapHandler {
     	
     	return sum;
     }
+    
+
+	public static int[] count2DimIndex(int oneDimIndex, int rows, int cols) {
+		int row = oneDimIndex / cols;
+		int col = oneDimIndex - row * cols;
+		int[] twoDimIndex = {row, col};
+		
+		return twoDimIndex; 
+	}
 }

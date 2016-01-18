@@ -73,6 +73,10 @@ public class Cell {
 			c = c.darker();
 		this.color = c;
 	}
+	
+	public void setColor(int r, int g, int b) {
+		this.color = new Color(r, g, b);
+	}
 
 	public void addAgent(Agent agent) {
 		// TODO: fix this temporary solution
