@@ -28,9 +28,14 @@ public class Global {
 	public static HashMap<Color, String> civilizations = new HashMap<>();
 	
     public static void main(String args[]) throws IOException, RuntimeException {
-    	Global.loadParameters();
-        Algorithm.loadParameters();
-        
+	    try{
+	    	Global.loadParameters();
+	        Algorithm.loadParameters();
+	    } catch (Exception e) {
+	    	System.err.println("sypie sie przy parametrach");
+	    	e.printStackTrace();
+	    }
+	    
     	System.out.println("Program started!\nSetting up simulation parameters...\n");
         System.out.println("Map loading...");
         MapHandler map = new MapHandler();
