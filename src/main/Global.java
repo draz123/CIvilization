@@ -32,7 +32,7 @@ public class Global {
 	    	Global.loadParameters();
 	        Algorithm.loadParameters();
 	    } catch (Exception e) {
-	    	System.err.println("sypie sie przy parametrach");
+	    	System.err.println("Blad podczas ladowania paremtrow");
 	    	e.printStackTrace();
 	    }
 	    

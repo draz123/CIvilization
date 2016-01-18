@@ -75,7 +75,6 @@ public class Cell {
 	}
 
 	public void addAgent(Agent agent) {
-		// TODO: fix this temporary solution
 		if (!hasAvailableSpace())
 			return;
 

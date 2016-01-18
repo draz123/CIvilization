@@ -11,7 +11,7 @@ import javax.swing.JPanel;
 import abm.Cell;
 
 public class MapPanel extends JPanel {
-
+	private static final long serialVersionUID = 1L;
 	private BufferedImage image;
 	
 	public MapPanel(int width, int height) {
@@ -28,9 +28,7 @@ public class MapPanel extends JPanel {
         g2.drawImage(image, null, null);
     }
 	
-    public void paintMap(Cell[][] map, int turn) {
-    	//TODO: zwaliduj rozmiary mapy - muszą być takie same, jak obrazka!
-    	
+    public void paintMap(Cell[][] map, int turn) {    	
 		int width = map[0].length;
 		int height = map.length;
     	for (int i=0; i<height; i++)

@@ -7,7 +7,6 @@ public class RasterToMapConverter {
 
     public static List<double[][]> convertRastersToFertilityMaps(List<RasterMod> rasters) {
         return convertRastersToFertilityMaps(rasters, 50, -10, 25, 40);
-        //return convertRastersToFertilityMaps(rasters, 90, -90, 0, 90);
     }
 
     public static List<double[][]> convertRastersToFertilityMaps(List<RasterMod> rasters, int leftUpperLat, int leftUpperLon, int rightBottomLat, int rightBottomLon) {

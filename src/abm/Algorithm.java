@@ -59,7 +59,6 @@ public class Algorithm {
 					if (availableSpace == 0)
 						break;
 					boolean bornNewBaby = r.nextInt(100) < 100 - 20 * agent.getLifeTime();
-					// TODO: make a parameter of it
 					if (bornNewBaby) {
 						newborns.add(new Agent(agent.getColor()));
 						availableSpace--;
@@ -100,7 +99,7 @@ public class Algorithm {
 		if (neighbours.size() == 0)
 			return;
 		for (int i = 0; i < migrantsNumber; i++) { 
-			int index = r.nextInt(currentCell.getAgentsSize()); //TODO: better migrants' choice
+			int index = r.nextInt(currentCell.getAgentsSize());
 			Agent agent = currentCell.agents.get(index);
 			Cell destination = neighbours.get(r.nextInt(neighbours.size()));
 			if (destination.hasAvailableSpace()) {
