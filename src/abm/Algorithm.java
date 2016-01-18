@@ -15,10 +15,15 @@ import map.MapHandler;
 
 public class Algorithm {
 
-	private static  int DEATH_TIME = 50 / Global.TURN_TIME;
-	public static  int MIGRATION_CAUSE = 5; // if free room < MIGRATION_CAUSE, try to migrate
-	public static  int MIGRATION_PERCENT = 20;
-	public static  int TRAVEL_PERCENT = 10;
+	/*
+	 * To obtain more information about Algorithm check page 14 of included documentation
+	 * 
+	 * Parameters described on page 20
+	 */
+	private static int DEATH_TIME = 50 / Global.TURN_TIME;
+	public static int  MIGRATION_CAUSE = 5; // if free room < MIGRATION_CAUSE,// try to migrate
+	public static int  MIGRATION_PERCENT = 20;
+	public static int  TRAVEL_PERCENT = 10;
 
 	private MapHandler map;
 	int rows;
@@ -98,7 +103,7 @@ public class Algorithm {
 		Random r = new Random();
 		if (neighbours.size() == 0)
 			return;
-		for (int i = 0; i < migrantsNumber; i++) { 
+		for (int i = 0; i < migrantsNumber; i++) {
 			int index = r.nextInt(currentCell.getAgentsSize());
 			Agent agent = currentCell.agents.get(index);
 			Cell destination = neighbours.get(r.nextInt(neighbours.size()));
@@ -108,38 +113,33 @@ public class Algorithm {
 			}
 		}
 	}
-	
+
 	public static void loadParameters() throws IOException {
-		
+
 		File fileToRead = new File("app.conf");
-		if(fileToRead.exists()) {
+		if (fileToRead.exists()) {
 			byte[] encoded = Files.readAllBytes(Paths.get("app.conf"));
 			String str = new String(encoded, StandardCharsets.UTF_8);
-			
+
 			str = str.replace("\n", "").replace("\r", "");
-			int[] tab = {
-					DEATH_TIME,
-					MIGRATION_CAUSE,
-					MIGRATION_PERCENT,
-					TRAVEL_PERCENT
-					};
-			
+			int[] tab = { DEATH_TIME, MIGRATION_CAUSE, MIGRATION_PERCENT, TRAVEL_PERCENT };
+
 			str = str.replaceAll("[^\\d;]", "");
-			
+
 			Scanner scanner = new Scanner(str);
 			scanner.useDelimiter(";");
-			
+
 			int i = 0;
-			while(scanner.hasNext() && i <= 9){
-				if(scanner.hasNextInt()){
+			while (scanner.hasNext() && i <= 9) {
+				if (scanner.hasNextInt()) {
 					int tmp = Integer.parseInt(scanner.next());
-					if(i>=6)
-						tab[i-6] = tmp;
+					if (i >= 6)
+						tab[i - 6] = tmp;
 					i++;
 				}
 			}
 			scanner.close();
-			
+
 			DEATH_TIME = tab[0];
 			MIGRATION_CAUSE = tab[1];
 			MIGRATION_PERCENT = tab[2];

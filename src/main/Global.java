@@ -17,7 +17,10 @@ import map.MapHandler;
 import visual.MapVisualizer;
 
 public class Global {
-
+	
+	/*
+	 * Parameters described on page 20 of included documentation
+	 */
     public static  int TURNS = 500;
 	public static  int TURN_TIME = 10;
 	public static  int CIVILIZATIONS_NR = 10;
@@ -32,7 +35,7 @@ public class Global {
 	    	Global.loadParameters();
 	        Algorithm.loadParameters();
 	    } catch (Exception e) {
-	    	System.err.println("Blad podczas ladowania paremtrow");
+	    	System.err.println("Loading parameters from file failed...");
 	    	e.printStackTrace();
 	    }
 	    

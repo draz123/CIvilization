@@ -8,7 +8,9 @@ import java.util.Map.Entry;
 import main.Global;
 
 public class Cell {
-
+	/*
+	 * To obtain more information about Cell check page 12 of included documentation.
+	 */
 	private double[] POPULATION_SIZE_RANGES = { 0, 0.50, 0.80, 0.90, 0.95 };
 
 	private int col;
