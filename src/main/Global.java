@@ -130,6 +130,12 @@ public class Global {
 				}
 			}
 			scanner.close();
+			TURNS = tab[0];
+			TURN_TIME = tab[1]; 
+			CIVILIZATIONS_NR = tab[2];
+			MAX_INIT_CIVIL_SIZE = tab[3];
+			MAX_AGENTS_CELL_LIMIT = tab[4];
+			MAX_FERTILITY = tab[5];
 		}
 	}
 }

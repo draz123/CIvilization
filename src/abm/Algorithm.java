@@ -140,6 +140,11 @@ public class Algorithm {
 				}
 			}
 			scanner.close();
+			
+			DEATH_TIME = tab[0];
+			MIGRATION_CAUSE = tab[1];
+			MIGRATION_PERCENT = tab[2];
+			TRAVEL_PERCENT = tab[3];
 		}
 	}
 
