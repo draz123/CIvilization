@@ -258,5 +258,5 @@ when I =/= Turns + 1 ->
   sendDataToJava(JavaId, ColorMap, AgentMap),
   nextTurn(JavaId, Turns, I + 1, FertilityMap, AgentMap, ColorMap, Rows, Cols, ok);
 
-nextTurn(_, Turns, I, _, _, _, _, _, ok) when I =:= Turns + 1 ->
-  {stop}.  
+nextTurn(JavaId, Turns, I, _, _, _, _, _, ok) when I =:= Turns + 1 ->
+  JavaId ! stop.  

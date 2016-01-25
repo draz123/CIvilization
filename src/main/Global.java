@@ -83,7 +83,6 @@ public class Global {
          * 
          * Here the connection to Erlang/Go is closed 
          */
-        System.out.println("End of simulation!\n");
     }
     
 	private static int[] setStartPosition(MapHandler map) {

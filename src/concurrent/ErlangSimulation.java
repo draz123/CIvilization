@@ -97,7 +97,7 @@ public class ErlangSimulation {
                 
                 if (erlangObject instanceof OtpErlangAtom && 
                 		((OtpErlangAtom) erlangObject).atomValue().equals("stop")) {
-                	System.out.println("Erlang told me to stahp... :c");
+                	System.out.println("End of simulation!\n");
                 	break;
                 }
 
