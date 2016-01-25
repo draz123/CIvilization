@@ -8,7 +8,9 @@ import java.util.Map.Entry;
 import main.Global;
 
 public class Cell {
-
+	/*
+	 * To obtain more information about Cell check page 12 of included documentation.
+	 */
 	private double[] POPULATION_SIZE_RANGES = { 0, 0.50, 0.80, 0.90, 0.95 };
 
 	private int col;
@@ -74,12 +76,26 @@ public class Cell {
 		this.color = c;
 	}
 	
+	public void darkenColor(Color color, int agentsNumber) {
+		if (fertility == 0)
+			return;
+		int times = 0;
+		for (int i = POPULATION_SIZE_RANGES.length - 1; i >= 0; i--) {
+			if (agentsNumber > (int) (POPULATION_SIZE_RANGES[i] * Global.MAX_AGENTS_CELL_LIMIT)) {
+				times = i;
+				break;
+			}
+		}
+		for (int i = 0; i < times; i++)
+			color = color.darker();
+		this.color = color;
+	}
+	
 	public void setColor(int r, int g, int b) {
 		this.color = new Color(r, g, b);
 	}
 
 	public void addAgent(Agent agent) {
-		// TODO: fix this temporary solution
 		if (!hasAvailableSpace())
 			return;
 
