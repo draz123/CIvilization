@@ -54,13 +54,11 @@ public class RasterReaderMod {
                     System.out.println("Unknown setting: " + line);
             } else if (line.matches("^\\s-?\\d+.*")) //the differences come from the fact rows start with single space char in our files (no space in the library's author test files
             {
-                //System.out.println( "Processing data section");
                 //Check that data is set up!
                 //Start processing numbers!
                 int row = 0;
                 double[][] data = new double[raster.rows][];
                 while (true) {
-                    //System.out.println( "Got data row: " + line );
                     String[] inData = line.split("\\s+");
                     double[] numData = new double[raster.cols];
                     if (inData.length - 1 != numData.length)
@@ -71,7 +69,6 @@ public class RasterReaderMod {
                         else numData[col] = Double.parseDouble(inData[col + 1]);
                     }
                     data[row] = numData;
-                    //Ugly backward input structure...
                     if (input.ready()) line = input.readLine();
                     else break;
                     row++;

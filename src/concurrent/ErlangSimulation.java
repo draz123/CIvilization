@@ -1,5 +1,6 @@
 package concurrent;
 
+import java.awt.Color;
 import java.io.IOException;
 
 import com.ericsson.otp.erlang.OtpErlangAtom;
@@ -8,16 +9,11 @@ import com.ericsson.otp.erlang.OtpErlangExit;
 import com.ericsson.otp.erlang.OtpErlangInt;
 import com.ericsson.otp.erlang.OtpErlangList;
 import com.ericsson.otp.erlang.OtpErlangObject;
-import com.ericsson.otp.erlang.OtpErlangPid;
-import com.ericsson.otp.erlang.OtpErlangRangeException;
-import com.ericsson.otp.erlang.OtpErlangString;
 import com.ericsson.otp.erlang.OtpErlangTuple;
-import com.ericsson.otp.erlang.OtpInputStream;
 import com.ericsson.otp.erlang.OtpMbox;
 import com.ericsson.otp.erlang.OtpNode;
 
 import abm.Cell;
-import main.Global;
 import map.MapHandler;
 import visual.MapVisualizer;
 
@@ -65,10 +61,12 @@ public class ErlangSimulation {
 		int rows = map.getHeight();
 		int cols = map.getWidth();
     	
-		OtpErlangObject[] message = new OtpErlangObject[rows*cols + 1]; //jedynka dla identyfikatora procesu
+		OtpErlangObject[] message = new OtpErlangObject[rows*cols + 3]; //one more for javaNode's PID
 		message[0] = mailbox.self(); // javaNode's PID
-		
-    	int currentCellIndex = 1;
+		message[1] = new OtpErlangInt(rows);
+		message[2] = new OtpErlangInt(cols);
+			
+    	int currentCellIndex = 3;
     	
     	for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < cols; j++) {
@@ -79,7 +77,7 @@ public class ErlangSimulation {
 		}
        
         OtpErlangList map = new OtpErlangList(message);
-        mailbox.send("getMap", erlangNodeName, map);
+        mailbox.send("main", erlangNodeName, map);
         System.out.println("Map sent!");
 	}
 	
@@ -93,7 +91,7 @@ public class ErlangSimulation {
                 OtpErlangObject erlangObject = mailbox.receive();
                 
                 if (erlangObject instanceof OtpErlangAtom && 
-                		((OtpErlangAtom) (OtpErlangObject) erlangObject).atomValue().equals("stop")) {
+                		((OtpErlangAtom) erlangObject).atomValue().equals("stop")) {
                 	System.out.println("Erlang told me to stahp... :c");
                 	break;
                 }
@@ -108,16 +106,19 @@ public class ErlangSimulation {
                 OtpErlangObject[] elements = list.elements();
                 
             	for (int i = 0; i < listSize; i++) {
-					OtpErlangTuple rgb = (OtpErlangTuple) elements[i];
+            		OtpErlangTuple colorAndAgentsNumber = (OtpErlangTuple) elements[i];
+					OtpErlangTuple rgb = (OtpErlangTuple) colorAndAgentsNumber.elementAt(0);
 					int r = Integer.parseInt(rgb.elementAt(0).toString());
 					int g = Integer.parseInt(rgb.elementAt(1).toString());
 					int b = Integer.parseInt(rgb.elementAt(2).toString());
 					
+					int agentsNumber = Integer.parseInt(
+							colorAndAgentsNumber.elementAt(1).toString());
 					int[] twoDimIndex = MapHandler.count2DimIndex(i, rows, cols);
 					int row = twoDimIndex[0];
 					int col = twoDimIndex[1];
 					
-					map.getCell(row, col).setColor(r, g, b);
+					map.getCell(row, col).darkenColor(new Color(r, g, b), agentsNumber);
             	} 
             	
             	visual.paintMap(map.getMap(), turn);

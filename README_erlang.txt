@@ -1,6 +1,10 @@
-Jak to uruchomiÊ?
-ano tak:
+Uruchomienie:
 
-1. erl -sname server -setcookie test             //In this command, ëserverí is the name of erlang node and ëtestí is the cookie. Note the use of this values in Java program.
-2. c(erl_proc).
-3. erl_proc:start().                             //Start the erlang process
+W terminalu:
+0. przejd≈∫ do folderu erlang
+1. uruchom node: erl -sname server           
+2. skompiluj wszystkie pliki ≈∫r√≥d≈Çowe w ten spos√≥b: c(nazwa_pliku_bez_rozszerzenia).  
+3. uruchom proces: main:start().
+
+W IDE do Javy:
+1. uruchom Global.

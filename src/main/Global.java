@@ -1,7 +1,11 @@
 package main;
 
 import java.awt.Color;
+import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Random;
 import java.util.Scanner;
@@ -10,25 +14,33 @@ import abm.Agent;
 import abm.Algorithm;
 import abm.Cell;
 import concurrent.ErlangSimulation;
-import erlangConnTest.JinterfaceTest;
 import map.MapHandler;
 import visual.MapVisualizer;
 
 public class Global {
-
-    public static final int TURNS = 500;
-	public static final int TURN_TIME = 10;
-	public static final int CIVILIZATIONS_NR = 10;
-	public static final int MAX_INIT_CIVIL_SIZE = 20;
-	public static final int MAX_AGENTS_CELL_LIMIT = 70;
-	public static final int MAX_FERTILITY = 7;
+	
+	/*
+	 * Parameters described on page 20 of included documentation
+	 */
+    public static  int TURNS = 500;
+	public static  int TURN_TIME = 10;
+	public static  int CIVILIZATIONS_NR = 10;
+	public static  int MAX_INIT_CIVIL_SIZE = 10;
+	public static  int MAX_AGENTS_CELL_LIMIT = 70;
+	public static  int MAX_FERTILITY = 7;
 	
 	public static HashMap<Color, String> civilizations = new HashMap<>();
 	
     public static void main(String args[]) throws IOException, RuntimeException {
-    	
-        System.out.println("Program started!\nSetting up simulation parameters...\n");
-       
+	    try{
+	    	Global.loadParameters();
+	        Algorithm.loadParameters();
+	    } catch (Exception e) {
+	    	System.err.println("Loading parameters from file failed...");
+	    	e.printStackTrace();
+	    }
+	    
+    	System.out.println("Program started!\nSetting up simulation parameters...\n");
         System.out.println("Map loading...");
         MapHandler map = new MapHandler();
         System.out.println("Map loaded!\n");
@@ -36,14 +48,13 @@ public class Global {
         System.out.println("Setting up the visualization...");
         MapVisualizer visual = new MapVisualizer(map.getWidth(), map.getHeight());
         System.out.println("Visualization set!\n");
-        
+
         ErlangSimulation simulation = new ErlangSimulation(map, visual);
         try {
-			simulation.start();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-        
+        	simulation.start();
+        } catch (Exception e) {
+    		e.printStackTrace();
+    	}
         
         /* Erlang/Go
          * 
@@ -53,31 +64,26 @@ public class Global {
          * all need to be implemented in the program.
          * The program sends a map of colors back to Java thread every turn, 
          * which is then visualized.  
+         * 
          */
-         
-//        System.out.println("Setting civilizations' positions...");
-//        setCivilizations(map, CIVILIZATIONS_NR);
-//        System.out.println("Societies set!\n");
-//        
-//        System.out.println("Starting simulation...");
-//        Algorithm alg = new Algorithm(map);
-//        Scanner scanner = new Scanner(System.in);
-//        for (int i = 0; i < TURNS; i++) {
-//            visual.paintMap(map.getMap(), i);
-//            System.out.println("Simulation: turn " + i);
-//            if (i % 25 == 0) {
-//            	System.out.println("Population size: " + map.countAgents());
-//            	scanner.nextLine();
-//            }
-//            alg.nextTurn();
-//        }
-//        visual.paintMap(map.getMap(), 0);
-//        /* Erlang/Go
-//         * 
-//         * Here the connection to Erlang/Go is closed
-//         */ 
-//         
-//        System.out.println("End of simulation!\n");
+/*        System.out.println("Setting civilizations' positions...");
+        setCivilizations(map, CIVILIZATIONS_NR);
+        System.out.println("Societies set!\n");
+        
+        System.out.println("Starting simulation...");
+        Algorithm alg = new Algorithm(map);
+        for (int i = 0; i < TURNS; i++) {
+            visual.paintMap(map.getMap(), i);
+            System.out.println("Simulation: turn " + i);
+            if (i % 10 == 0) System.out.println("Population size: " + map.countAgents());
+            alg.nextTurn();
+        }
+        visual.paintMap(map.getMap(), 0);*/
+        /* Erlang/Go
+         * 
+         * Here the connection to Erlang/Go is closed 
+         */
+        System.out.println("End of simulation!\n");
     }
     
 	private static int[] setStartPosition(MapHandler map) {
@@ -103,5 +109,44 @@ public class Global {
 			cell.updateColor();
 			civilizations.put(color, "Civ " + i);
 		}
-	}    
+	}
+	
+	private static void loadParameters() throws IOException {
+		
+		File fileToRead = new File("app.conf");
+		if(fileToRead.exists()) {
+			byte[] encoded = Files.readAllBytes(Paths.get("app.conf"));
+			String str = new String(encoded, StandardCharsets.UTF_8);
+			
+			str = str.replace("\n", "").replace("\r", "");
+			int[] tab = {
+					TURNS, 
+					TURN_TIME, 
+					CIVILIZATIONS_NR, 
+					MAX_INIT_CIVIL_SIZE,
+					MAX_AGENTS_CELL_LIMIT,
+					MAX_FERTILITY
+					};
+			
+			str = str.replaceAll("[^\\d;]", "");
+			
+			Scanner scanner = new Scanner(str);
+			scanner.useDelimiter(";");
+			
+			int i = 0;
+			while(scanner.hasNext() && i <= 5){
+				if(scanner.hasNextInt()){
+					int tmp = Integer.parseInt(scanner.next());
+					tab[i++] = tmp; 
+				}
+			}
+			scanner.close();
+			TURNS = tab[0];
+			TURN_TIME = tab[1]; 
+			CIVILIZATIONS_NR = tab[2];
+			MAX_INIT_CIVIL_SIZE = tab[3];
+			MAX_AGENTS_CELL_LIMIT = tab[4];
+			MAX_FERTILITY = tab[5];
+		}
+	}
 }
