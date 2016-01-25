@@ -13,7 +13,9 @@ import com.ericsson.otp.erlang.OtpErlangTuple;
 import com.ericsson.otp.erlang.OtpMbox;
 import com.ericsson.otp.erlang.OtpNode;
 
+import abm.Algorithm;
 import abm.Cell;
+import main.Global;
 import map.MapHandler;
 import visual.MapVisualizer;
 
@@ -23,11 +25,14 @@ public class ErlangSimulation {
 	private MapVisualizer visual;
 	static String erlangNodeName = "server"; // $ erl -sname server
     OtpNode javaNode;
-    OtpMbox mailbox; 
+    OtpMbox mailbox;
+    Algorithm alg;
 	
 	public ErlangSimulation(MapHandler map, MapVisualizer visual) {
 		this.map = map;
 		this.visual = visual;
+		alg = new Algorithm(map);
+		Global.setCivilizations(map, Global.CIVILIZATIONS_NR);
 	}
 	
 	public void start() {
@@ -96,31 +101,29 @@ public class ErlangSimulation {
                 	break;
                 }
 
-                if (!(erlangObject instanceof OtpErlangList)) 
-                    throw new IllegalArgumentException("The data is not a list of rgb tuples!!");
-                
-                OtpErlangList list = (OtpErlangList) erlangObject;
-                
-                int listSize = list.arity();
-                if (listSize != rows * cols) throw new IllegalArgumentException("The data is not complete!");
-                OtpErlangObject[] elements = list.elements();
-                
-            	for (int i = 0; i < listSize; i++) {
-            		OtpErlangTuple colorAndAgentsNumber = (OtpErlangTuple) elements[i];
-					OtpErlangTuple rgb = (OtpErlangTuple) colorAndAgentsNumber.elementAt(0);
-					int r = Integer.parseInt(rgb.elementAt(0).toString());
-					int g = Integer.parseInt(rgb.elementAt(1).toString());
-					int b = Integer.parseInt(rgb.elementAt(2).toString());
-					
-					int agentsNumber = Integer.parseInt(
-							colorAndAgentsNumber.elementAt(1).toString());
-					int[] twoDimIndex = MapHandler.count2DimIndex(i, rows, cols);
-					int row = twoDimIndex[0];
-					int col = twoDimIndex[1];
-					
-					map.getCell(row, col).darkenColor(new Color(r, g, b), agentsNumber);
-            	} 
-            	
+                if (erlangObject instanceof OtpErlangList) {                    
+	                OtpErlangList list = (OtpErlangList) erlangObject;
+	                
+	                int listSize = list.arity();
+	                if (listSize != rows * cols) throw new IllegalArgumentException("The data is not complete!");
+	                OtpErlangObject[] elements = list.elements();
+	                
+	            	for (int i = 0; i < listSize; i++) {
+	            		OtpErlangTuple colorAndAgentsNumber = (OtpErlangTuple) elements[i];
+						OtpErlangTuple rgb = (OtpErlangTuple) colorAndAgentsNumber.elementAt(0);
+						int r = Integer.parseInt(rgb.elementAt(0).toString());
+						int g = Integer.parseInt(rgb.elementAt(1).toString());
+						int b = Integer.parseInt(rgb.elementAt(2).toString());
+						
+						int agentsNumber = Integer.parseInt(
+								colorAndAgentsNumber.elementAt(1).toString());
+						int[] twoDimIndex = MapHandler.count2DimIndex(i, rows, cols);
+						int row = twoDimIndex[0];
+						int col = twoDimIndex[1];
+						
+						map.getCell(row, col).darkenColor(new Color(r, g, b), agentsNumber);
+	            	} 
+                } else alg.nextTurn();
             	visual.paintMap(map.getMap(), turn);
             	System.out.println("Simulation: turn " + turn);
                 turn++;

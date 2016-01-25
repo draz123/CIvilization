@@ -2,9 +2,9 @@
 -export([getParameter/1]).
 
 
-getParameter(turns) -> 100;
+getParameter(turns) -> 300;
 getParameter(turn_time) -> 10;
-getParameter(civilizations_nr) -> 7;
+getParameter(civilizations_nr) -> 5;
 getParameter(max_init_civil_state) -> 10;
 getParameter(max_agents_cell_limit) -> 70;
 getParameter(max_fertility) -> 7;

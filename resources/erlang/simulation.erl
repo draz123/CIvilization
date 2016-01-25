@@ -7,16 +7,18 @@
 startSimulation(Turns, FertilityMap, AgentMap, ColorMap, Rows, Cols, JavaId) ->
   io:format("Sending data to Java!~n"),
   sendDataToJava(JavaId, ColorMap, AgentMap),
-  nextTurn(JavaId, Turns, 1, FertilityMap, AgentMap, ColorMap, Rows, Cols).
+  nextTurn(JavaId, Turns, 1, FertilityMap, AgentMap, ColorMap, Rows, Cols, ok).
 
 
 sendDataToJava(JavaId, ColorMap, AgentMap) ->
   AgentsCount = lists:map(fun(Agents) -> length(Agents) end, AgentMap),
-  JavaId ! lists:zip(ColorMap, AgentsCount).
+  % JavaId ! lists:zip(ColorMap, AgentsCount).
+  JavaId ! {ColorMap, AgentsCount}.
 
 
 nextTurn(JavaId, Turns, I, FertilityMap, AgentMap, ColorMap, Rows, Cols) 
-when Turns =/= I + 1 ->
+when I =/= Turns + 1 ->
+  io:format("Simulation: turn ~p~n", [I]),
   AgentMap_ = deathsAndBirths(FertilityMap, AgentMap),
   NewAgentMap = migrations(FertilityMap, AgentMap_, Rows, Cols),
   NewColorMap = elections(NewAgentMap, ColorMap),
@@ -24,16 +26,11 @@ when Turns =/= I + 1 ->
   sendDataToJava(JavaId, NewColorMap, NewAgentMap),
   nextTurn(JavaId, Turns, I + 1, FertilityMap, NewAgentMap, NewColorMap, Rows, Cols);
 
-nextTurn(_, Turns, I, _, _, _, _, _) when Turns =:= I + 1 ->
+nextTurn(_, Turns, I, _, _, _, _, _) when I =:= Turns + 1 ->
   {stop}.  
 
 
-deathsAndBirths(FertilityMap, AgentMap) ->
-  % FertilityMap = [1, 1, 1, 1],
-  % AgentMap = [[{{1,2,3}, 5}, {{1,2,3}, 2}, {{1,2,3}, 0}], 
-  %   [{{2,2,3}, 5}, {{2,2,3}, 2}, {{2,2,3}, 0}],
-  %   [{{3,2,3}, 5}, {{3,2,3}, 2}, {{3,2,3}, 0}],
-  %   [{{4,2,3}, 5}, {{4,2,3}, 2}, {{4,2,3}, 0}]],        
+deathsAndBirths(FertilityMap, AgentMap) ->      
   AgentMap_ = deaths(AgentMap),
   births(AgentMap_, FertilityMap).
 
@@ -252,3 +249,14 @@ selectDominantColor([{Color, Occurrences} | Tail], DominantColor, MaxOccurrences
     Occurrences =< MaxOccurrences ->
       selectDominantColor(Tail, DominantColor, MaxOccurrences)
   end.
+
+
+nextTurn(JavaId, Turns, I, FertilityMap, AgentMap, ColorMap, Rows, Cols, ok) 
+when I =/= Turns + 1 ->
+  io:format("Simulation: turn ~p~n", [I]),
+  io:format("Sending data to Java!~n"),
+  sendDataToJava(JavaId, ColorMap, AgentMap),
+  nextTurn(JavaId, Turns, I + 1, FertilityMap, AgentMap, ColorMap, Rows, Cols, ok);
+
+nextTurn(_, Turns, I, _, _, _, _, _, ok) when I =:= Turns + 1 ->
+  {stop}.  

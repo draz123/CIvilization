@@ -97,7 +97,7 @@ public class Global {
 		return cords;
 	}
 	
-	private static void setCivilizations(MapHandler map, int n) {
+	public static void setCivilizations(MapHandler map, int n) {
 		for(int i=0; i<n; i++) {
 			int[] cords = setStartPosition(map);
 			Cell cell = map.getCell(cords[0], cords[1]);
